@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" fill="none">
+  <rect width="480" height="320" rx="22" fill="#F5FBF6"/>
+  <rect x="16" y="16" width="448" height="288" rx="18" fill="#FCFEFC" stroke="#D7E7DA" stroke-width="2" stroke-dasharray="8 8"/>
+  <circle cx="154" cy="190" r="74" fill="#F08F35" fill-opacity=".78"/>
+  <circle cx="210" cy="162" r="88" fill="#B6E188" fill-opacity=".72"/>
+  <circle cx="275" cy="126" r="53" fill="#7FD36F" fill-opacity=".62"/>
+  <path d="M48 48L448 278" stroke="#A9CBB6" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="240" y="66" text-anchor="middle" fill="#5E8190" font-family="Arial, sans-serif" font-size="26" font-weight="700">
+    GIS Project Placeholder
+  </text>
+</svg>
+

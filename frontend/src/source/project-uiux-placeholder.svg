@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" fill="none">
+  <rect width="480" height="320" rx="22" fill="#FFF7FA"/>
+  <rect x="16" y="16" width="448" height="288" rx="18" fill="#FFF" stroke="#F5D8E5" stroke-width="2" stroke-dasharray="8 8"/>
+  <rect x="74" y="78" width="220" height="154" rx="16" fill="#F8FAFC" stroke="#E2E8F0"/>
+  <rect x="316" y="124" width="88" height="150" rx="18" fill="#FFF" stroke="#D6DCEC" stroke-width="6"/>
+  <rect x="92" y="98" width="184" height="22" rx="7" fill="#E2E8F0"/>
+  <rect x="92" y="136" width="70" height="70" rx="10" fill="#FCA5A5" fill-opacity=".32"/>
+  <rect x="178" y="136" width="98" height="12" rx="6" fill="#CBD5E1"/>
+  <rect x="178" y="158" width="76" height="12" rx="6" fill="#E2E8F0"/>
+  <rect x="178" y="180" width="88" height="12" rx="6" fill="#E2E8F0"/>
+  <text x="240" y="60" text-anchor="middle" fill="#EC6B98" font-family="Arial, sans-serif" font-size="26" font-weight="700">
+    UI/UX Placeholder
+  </text>
+</svg>
+

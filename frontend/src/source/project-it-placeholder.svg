@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" fill="none">
+  <rect width="480" height="320" rx="22" fill="#FFF8F1"/>
+  <rect x="16" y="16" width="448" height="288" rx="18" fill="#FFF" stroke="#F8D9BC" stroke-width="2" stroke-dasharray="8 8"/>
+  <rect x="52" y="78" width="376" height="196" rx="16" fill="#F8FAFC"/>
+  <rect x="70" y="98" width="340" height="34" rx="8" fill="#E2E8F0"/>
+  <rect x="70" y="150" width="102" height="102" rx="10" fill="#F59E0B" fill-opacity=".18"/>
+  <rect x="188" y="150" width="102" height="102" rx="10" fill="#60A5FA" fill-opacity=".18"/>
+  <rect x="306" y="150" width="104" height="102" rx="10" fill="#34D399" fill-opacity=".18"/>
+  <text x="240" y="60" text-anchor="middle" fill="#EA7A1A" font-family="Arial, sans-serif" font-size="26" font-weight="700">
+    IT Project Placeholder
+  </text>
+</svg>
+
