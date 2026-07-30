@@ -23,6 +23,7 @@
   --career-gis: #247a57;
   --career-it: #268db3;
   --career-survey: #d9824b;
+  --topbar-height: 50px;
 }
 
 * {
@@ -64,6 +65,10 @@ button {
   padding: 0;
 }
 
+.home-page {
+  position: relative;
+}
+
 .portfolio-shell {
   position: relative;
   width: 100%;
@@ -79,19 +84,22 @@ button {
   box-shadow: none;
 }
 
+.page-main {
+  position: relative;
+}
+
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: 22px 48px 0;
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  padding: 0 48px;
   background: transparent;
   border: none;
   border-radius: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 40;
   box-shadow: none;
 }
@@ -105,7 +113,7 @@ button {
 
 .brand strong {
   display: block;
-  font-size: clamp(2.1rem, 2vw, 2.55rem);
+  font-size: clamp(1.95rem, 1.9vw, 2.35rem);
   line-height: 1.02;
   letter-spacing: -0.04em;
   color: var(--career-navy);
@@ -115,9 +123,9 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 6px;
   color: var(--career-navy);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   letter-spacing: -0.01em;
 }
 
@@ -148,7 +156,7 @@ button {
   position: relative;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.98rem;
+  font-size: 0.94rem;
   color: var(--career-navy);
 }
 
@@ -192,12 +200,17 @@ button {
   border-bottom: 1px solid rgba(219, 229, 238, 0.5);
 }
 
+.career-universe-mobile-hero {
+  display: none;
+}
+
 .hero-section {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  align-items: start;
+  align-items: center;
   gap: clamp(28px, 3.4vw, 52px);
-  min-height: 100vh;
+  min-height: calc(100vh - var(--topbar-height));
+  height: calc(100vh - var(--topbar-height));
   background:
     radial-gradient(circle at 18% 8%, rgba(214, 174, 121, 0.14), transparent 22%),
     radial-gradient(circle at 84% 22%, rgba(64, 140, 204, 0.08), transparent 20%),
@@ -208,9 +221,7 @@ button {
 .career-universe-section {
   position: sticky;
   top: 0;
-  min-height: 100vh;
-  padding-top: 104px;
-  padding-bottom: 40px;
+  min-height: calc(100vh - var(--topbar-height));
   overflow: hidden;
   will-change: transform, opacity;
   isolation: isolate;
@@ -220,22 +231,20 @@ button {
 .hero-copy {
   width: min(42vw, 36rem);
   max-width: min(42vw, 36rem);
-  min-height: 460px;
-  padding: 0;
-  position: absolute;
-  top: 50%;
-  left: 48px;
+  min-height: min(460px, calc(100vh - var(--topbar-height)));
+  padding: clamp(12px, 2.8vh, 32px) 0 0 28px;
+  position: relative;
   z-index: 1;
   display: grid;
   align-content: start;
-  align-self: start;
-  transform: translate3d(28px, -50%, 0);
+  align-self: center;
+  justify-self: start;
+  transform: none;
   border-radius: 28px;
   border: 1px solid transparent;
   background: transparent;
   box-shadow: none;
   transition:
-    left 260ms cubic-bezier(0.22, 1, 0.36, 1),
     width 260ms cubic-bezier(0.22, 1, 0.36, 1),
     max-width 260ms cubic-bezier(0.22, 1, 0.36, 1),
     min-height 260ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -352,11 +361,19 @@ button {
 }
 
 .career-universe-stage.is-story-hero .career-universe-progress {
-  display: none;
+  display: none !important;
 }
 
 .career-universe-stage.is-story-hero .hero-copy {
-  padding-top: 7vh;
+  min-height: auto;
+  padding-top: clamp(8px, 2.4vh, 24px);
+  align-self: start;
+}
+
+.career-universe-stage.is-story-hero .career-universe-story-panels {
+  display: none;
+  min-height: 0;
+  margin-top: 0;
 }
 
 .career-universe-stage.is-story-hero .career-universe-visual {
@@ -379,16 +396,32 @@ button {
 
 .career-universe-stage.is-story-focus {
   min-height: 100vh;
-  padding: 24px 26px 28px;
+  height: 100vh;
+  padding: 0 26px;
+}
+
+.career-universe-stage.is-story-focus .career-universe-intro {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 .career-universe-stage.is-story-focus .hero-copy {
-  left: 26px;
   width: min(39vw, 500px);
   max-width: min(39vw, 500px);
-  padding: 26px 24px 20px;
-  padding-top: 26px;
-  transform: translate3d(0, -50%, 0);
+  min-height: 420px;
+  padding: 32px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  justify-self: start;
+  transform: none;
   border-radius: 28px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 249, 0.84)),
@@ -398,12 +431,13 @@ button {
 }
 
 .career-universe-stage.is-story-focus .career-universe-story-panels {
-  min-height: 420px;
+  min-height: 320px;
   margin-top: 0;
+  flex: 1 1 auto;
 }
 
 .career-universe-stage.is-story-focus .career-universe-progress {
-  margin-top: auto;
+  margin-top: 18px;
   position: static;
   inset: auto;
 }
@@ -2359,7 +2393,37 @@ button {
   animation: none;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 860px) {
+  .career-universe-story {
+    min-height: auto;
+    border-bottom: none;
+  }
+
+  .career-universe-mobile-hero {
+    display: block;
+    padding: 24px 20px 28px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(214, 174, 121, 0.14), transparent 24%),
+      radial-gradient(circle at 82% 18%, rgba(64, 140, 204, 0.08), transparent 22%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 246, 238, 0.88));
+  }
+
+  .career-universe-mobile-copy {
+    display: grid;
+    gap: 0;
+  }
+
+  .career-universe-mobile-copy .career-universe-headline {
+    margin: 0;
+    max-width: none;
+  }
+
+  .career-universe-stage,
+  .career-universe-scroll-track,
+  .career-universe-summaries {
+    display: none !important;
+  }
+
   .hero-section {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -2370,6 +2434,7 @@ button {
   .hero-copy {
     max-width: none;
     padding: 0;
+    min-height: auto;
   }
 
   .hero-visual {
@@ -2438,11 +2503,17 @@ button {
 }
 
 @media (max-width: 860px) {
+  :root {
+    --topbar-height: 112px;
+  }
+
   .topbar {
     position: relative;
     flex-direction: column;
     align-items: flex-start;
-    padding: 28px 20px 0;
+    height: auto;
+    min-height: var(--topbar-height);
+    padding: 18px 20px 10px;
   }
 
   .topnav {
@@ -2471,6 +2542,10 @@ button {
     height: 260px;
   }
 
+  .career-universe-story.is-static .career-universe-visual {
+    display: none;
+  }
+
   .career-universe-story.is-static .career-universe-summaries {
     padding: 0 20px 24px;
   }
@@ -2490,7 +2565,7 @@ button {
   }
 
   .hero-copy {
-    padding-top: 0;
+    padding: 0;
   }
 
   .hero-keywords {

@@ -867,7 +867,7 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
     ? new THREE.MeshBasicMaterial({
         map: options.gisTexture ?? null,
         transparent: true,
-        opacity: 0.28,
+        opacity: 0.2,
         depthWrite: false,
       })
     : null;
@@ -1152,21 +1152,14 @@ export function mountCareerUniverseScene(options = {}) {
     if (!staticMode) {
       frameId = window.requestAnimationFrame(animate);
     }
-    const delta = Math.min(clock.getDelta(), 0.05);
-    const elapsed = clock.elapsedTime;
-    const cameraLerp = 1 - Math.exp(-delta * 6.4);
-    const lookAtLerp = 1 - Math.exp(-delta * 7.2);
-    const emphasisLerp = 1 - Math.exp(-delta * 8.4);
-    const scaleLerp = 1 - Math.exp(-delta * 7.4);
-    const revealLerp = 1 - Math.exp(-delta * 7.8);
-    const connectionLerp = 1 - Math.exp(-delta * 5.8);
+    const elapsed = clock.getElapsedTime();
 
     if (!staticMode) {
       universeGroup.rotation.z = Math.sin(elapsed * 0.12) * 0.015;
     }
 
-    currentCameraPosition.lerp(targetCameraPosition, cameraLerp);
-    currentLookAt.lerp(targetLookAt, lookAtLerp);
+    currentCameraPosition.lerp(targetCameraPosition, 0.07);
+    currentLookAt.lerp(targetLookAt, 0.08);
     camera.position.copy(currentCameraPosition);
     camera.lookAt(currentLookAt);
 
@@ -1201,16 +1194,16 @@ export function mountCareerUniverseScene(options = {}) {
         disciplineLayer.rotation.x = Math.sin(elapsed * 0.18 + index) * 0.05;
       }
 
-      node.emphasisCurrent += (node.emphasisTarget - node.emphasisCurrent) * emphasisLerp;
-      node.scaleCurrent += (node.scaleTarget - node.scaleCurrent) * scaleLerp;
+      node.emphasisCurrent += (node.emphasisTarget - node.emphasisCurrent) * 0.1;
+      node.scaleCurrent += (node.scaleTarget - node.scaleCurrent) * 0.08;
       node.satelliteRevealCurrent +=
-        (node.satelliteRevealTarget - node.satelliteRevealCurrent) * revealLerp;
+        (node.satelliteRevealTarget - node.satelliteRevealCurrent) * 0.08;
 
       group.scale.setScalar(node.scaleCurrent);
       core.material.opacity = 0.72 + node.emphasisCurrent * 0.22;
       planet.material.opacity = 0.54 + node.emphasisCurrent * 0.38;
       if (gisOverlay?.material) {
-        gisOverlay.material.opacity = 0.12 + node.emphasisCurrent * 0.18;
+        gisOverlay.material.opacity = 0.08 + node.emphasisCurrent * 0.12;
       }
       sheenShell.material.opacity = 0.04 + node.emphasisCurrent * 0.12;
       halo.material.opacity = 0.04 + node.emphasisCurrent * 0.18;
@@ -1228,7 +1221,7 @@ export function mountCareerUniverseScene(options = {}) {
         const stagger = Math.max(node.satelliteRevealCurrent * 1.28 - satelliteIndex * 0.12, 0);
         const reveal = Math.min(stagger, 1) * node.emphasisCurrent;
 
-        satellite.revealCurrent += (reveal - satellite.revealCurrent) * revealLerp;
+        satellite.revealCurrent += (reveal - satellite.revealCurrent) * 0.1;
         if (!staticMode) {
           satellite.pivot.rotation.y += compactMode ? satellite.speed * 0.45 : satellite.speed;
         }
@@ -1264,8 +1257,7 @@ export function mountCareerUniverseScene(options = {}) {
       positions[4] = endNode.group.position.y;
       positions[5] = endNode.group.position.z;
       lineSet.geometry.attributes.position.needsUpdate = true;
-      lineSet.material.opacity +=
-        (((latestView.integration ?? 0) * 0.18) - lineSet.material.opacity) * connectionLerp;
+      lineSet.material.opacity += (((latestView.integration ?? 0) * 0.18) - lineSet.material.opacity) * 0.08;
     });
 
     renderScene();

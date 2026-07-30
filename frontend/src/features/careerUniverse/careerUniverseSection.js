@@ -1,6 +1,23 @@
 export function renderCareerUniverseSection() {
   return `
     <section class="career-universe-story" id="home">
+      <div class="career-universe-mobile-hero">
+        <div class="career-universe-mobile-copy">
+          <p class="section-kicker">Career Universe</p>
+          <h1 class="career-universe-headline">
+            I connect the
+            <span class="text-terracotta">physical</span>,
+            <span class="text-green">spatial</span>
+            and
+            <span class="text-blue">digital</span>
+            worlds.
+          </h1>
+          <p class="hero-keywords">Surveying &middot; GIS &middot; Information Technology</p>
+          <p class="hero-journey">Measure &middot; Understand &middot; Build</p>
+          <div class="hero-accent-line" aria-hidden="true"></div>
+        </div>
+      </div>
+
       <div class="career-universe-stage hero-section career-universe-section">
         <div class="hero-copy">
           <div class="career-universe-intro" data-story-copy="intro">

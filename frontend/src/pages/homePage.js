@@ -155,17 +155,17 @@ function renderProjectCards(activeLens = "all") {
 
 export function renderHomePage() {
   return `
-    <main class="portfolio-shell">
+    <div class="home-page">
+      <!-- Navbar -->
       <header class="topbar">
         <a class="brand" href="#">
           <span>
             <strong>Yufei He</strong>
-            <small>GIS <span>&bull;</span> IT <span>&bull;</span> Surveying</small>
           </span>
+          <small>GIS <span>&bull;</span> IT <span>&bull;</span> Surveying</small>
         </a>
         <nav class="topnav" aria-label="Main Navigation">
-          <a class="is-active" href="#home">Home</a>
-          <a href="#/lens/integrated">Story</a>
+          <a href="#home">Home</a>
           <a href="#projects">Projects</a>
           <a href="#skills">Skills</a>
           <a href="#experience">Experience</a>
@@ -173,98 +173,110 @@ export function renderHomePage() {
         </nav>
       </header>
 
-      ${renderCareerUniverseSection()}
+      <div class="portfolio-shell">
+        <main class="page-main">
+          <!-- Hero / Career Universe Section -->
+          ${renderCareerUniverseSection()}
 
-      <section class="featured-section section-card" id="projects">
-        <div class="featured-heading">
-          <p class="section-kicker center">Featured Solutions</p>
-          <h2>Different disciplines. <span class="text-green">One way of thinking.</span></h2>
-          <p>
-            From spatial analysis and software engineering to integrated GIS systems and
-            user-centered design, I turn complex problems into practical solutions.
-          </p>
-        </div>
-        <div class="projects-grid" id="projects-grid">
-          ${renderProjectCards("gis")}
-        </div>
-        <div class="featured-footer">
-          <span>Interested in working together?</span>
-          <a href="#contact">Let's connect &rarr;</a>
-        </div>
-      </section>
+          <!-- About Section -->
+          <section class="about-section" id="about">
+            <p class="section-kicker">About Me</p>
+            <h2>Hi, I'm <strong>Yufei He.</strong></h2>
+            <p>
+              I'm a GIS and IT professional with a multidisciplinary background in geospatial science,
+              software development, and surveying. I combine spatial thinking with software engineering
+              to build practical, data-driven solutions, from GIS applications and spatial automation
+              to full-stack web systems.
+            </p>
+            <p>
+              I'm passionate about exploring the intersection of GIS + IT, using technology,
+              automation, and data to solve real-world problems and create meaningful impact.
+            </p>
+          </section>
 
-      <section class="career-lens-section section-card" id="career-lens">
-        <div class="section-heading center">
-          <h2>Choose a Career Lens</h2>
-          <p>Different perspectives, same passion.</p>
-        </div>
-        <div class="lens-grid">
-          ${renderLensCards()}
-        </div>
-      </section>
+          <!-- Featured Projects Section -->
+          <section class="featured-section section-card" id="projects">
+            <div class="featured-heading">
+              <p class="section-kicker center">Featured Solutions</p>
+              <h2>Different disciplines. <span class="text-green">One way of thinking.</span></h2>
+              <p>
+                From spatial analysis and software engineering to integrated GIS systems and
+                user-centered design, I turn complex problems into practical solutions.
+              </p>
+            </div>
+            <div class="projects-grid" id="projects-grid">
+              ${renderProjectCards("gis")}
+            </div>
+            <div class="featured-footer">
+              <span>Interested in working together?</span>
+              <a href="#contact">Let's connect &rarr;</a>
+            </div>
+          </section>
 
-      <section class="about-section" id="about">
-        <p class="section-kicker">About Me</p>
-        <h2>Hi, I'm <strong>Yufei He.</strong></h2>
-        <p>
-          I'm a GIS and IT professional with a multidisciplinary background in geospatial science,
-          software development, and surveying. I combine spatial thinking with software engineering
-          to build practical, data-driven solutions, from GIS applications and spatial automation
-          to full-stack web systems.
-        </p>
-        <p>
-          I'm passionate about exploring the intersection of GIS + IT, using technology,
-          automation, and data to solve real-world problems and create meaningful impact.
-        </p>
-      </section>
+          <!-- Career Lens Section -->
+          <!--
+          <section class="career-lens-section section-card" id="career-lens">
+            <div class="section-heading center">
+              <h2>Choose a Career Lens</h2>
+              <p>Different perspectives, same passion.</p>
+            </div>
+            <div class="lens-grid">
+              ${renderLensCards()}
+            </div>
+          </section>
+          -->
+          
 
-      <section class="connect-section section-card" id="contact">
-        <div class="section-heading center">
-          <p class="section-kicker">Let's Connect</p>
-          <h2>Let's build <span class="text-green">what matters</span></h2>
-          <p>
-            I'm open to opportunities, collaborations and conversations.
-            Let's create interactive work that makes a real difference.
-          </p>
-        </div>
-        <div class="contact-grid">
-          <a
-            class="contact-card green"
-            href="https://github.com/Yufei0122"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span class="contact-icon">G</span>
-            <h3>GitHub</h3>
-            <strong>Yufei0122</strong>
-            <p>Explore my code and projects.</p>
-            <span>View GitHub &rarr;</span>
-          </a>
-          <a class="contact-card orange" href="mailto:hyf0122@gmail.com">
-            <span class="contact-icon">@</span>
-            <h3>Get in Touch</h3>
-            <strong>0423 847 722</strong>
-            <p>hyf0122@gmail.com</p>
-            <span>Send an Email &rarr;</span>
-          </a>
-          <a
-            class="contact-card violet"
-            href="https://www.linkedin.com/in/yufei-he-2b7bab284/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span class="contact-icon">in</span>
-            <h3>LinkedIn</h3>
-            <strong>Yufei (Katie) He</strong>
-            <p>Let's connect professionally.</p>
-            <span>Connect &rarr;</span>
-          </a>
-        </div>
-        <div class="availability-note">
-          Available for graduate, GIS, software & integrated roles.
-        </div>
-      </section>
-    </main>
+          <!-- Contact Section -->
+          <section class="connect-section section-card" id="contact">
+            <div class="section-heading center">
+              <p class="section-kicker">Let's Connect</p>
+              <h2>Let's build <span class="text-green">what matters</span></h2>
+              <p>
+                I'm open to opportunities, collaborations and conversations.
+                Let's create interactive work that makes a real difference.
+              </p>
+            </div>
+            <div class="contact-grid">
+              <a
+                class="contact-card green"
+                href="https://github.com/Yufei0122"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="contact-icon">G</span>
+                <h3>GitHub</h3>
+                <strong>Yufei0122</strong>
+                <p>Explore my code and projects.</p>
+                <span>View GitHub &rarr;</span>
+              </a>
+              <a class="contact-card orange" href="mailto:hyf0122@gmail.com">
+                <span class="contact-icon">@</span>
+                <h3>Get in Touch</h3>
+                <strong>0423 847 722</strong>
+                <p>hyf0122@gmail.com</p>
+                <span>Send an Email &rarr;</span>
+              </a>
+              <a
+                class="contact-card violet"
+                href="https://www.linkedin.com/in/yufei-he-2b7bab284/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span class="contact-icon">in</span>
+                <h3>LinkedIn</h3>
+                <strong>Yufei (Katie) He</strong>
+                <p>Let's connect professionally.</p>
+                <span>Connect &rarr;</span>
+              </a>
+            </div>
+            <div class="availability-note">
+              Available for graduate, GIS, software & integrated roles.
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
   `;
 }
 
@@ -305,6 +317,10 @@ export function hydrateHomePage() {
 
     story.classList.toggle("is-static", staticMode || !webglAvailable);
     story.classList.toggle("is-webgl-disabled", !webglAvailable);
+
+    if (compactMode) {
+      return;
+    }
 
     if (!webglAvailable || reducedMotion) {
       return;
