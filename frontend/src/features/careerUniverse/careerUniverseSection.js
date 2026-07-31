@@ -40,12 +40,34 @@ export function renderCareerUniverseSection() {
           </div>
 
           <div class="career-universe-story-panels" aria-label="Career universe chapters">
+          <article class="career-story-panel intro" data-story-panel="intro">
+              <p class="career-story-step">Introduction</p>
+              <h2>Surveying</h2>
+              <p class="career-story-body">
+                Capturing the physical world with precise and reliable data.
+              </p>
+              <dl class="career-story-education">
+                <div>
+                  <dt>Education</dt>
+                  <dd>Master of Geographic Information Systems</dd>
+                  <dd>The University of Queensland</dd>
+                </div>
+              </dl>
+            </article>
+
             <article class="career-story-panel survey" data-story-panel="survey">
               <p class="career-story-step">01 &mdash; Measure</p>
               <h2>Surveying</h2>
               <p class="career-story-body">
                 Capturing the physical world with precise and reliable data.
               </p>
+              <dl class="career-story-education">
+                <div>
+                  <dt>Education</dt>
+                  <dd>Bachelor of Surveying and Mapping Engineering</dd>
+                  <dd>City Institution of Dalian University of Technology</dd>
+                </div>
+              </dl>
             </article>
 
             <article class="career-story-panel gis" data-story-panel="gis">
@@ -76,28 +98,17 @@ export function renderCareerUniverseSection() {
                   <dd>Queensland University of Technology</dd>
                 </div>
               </dl>
-            </article>
-
-            <article class="career-story-panel integrated" data-story-panel="integrated">
-              <p class="career-story-step">Integrated Perspective</p>
-              <div class="career-story-pillars" aria-label="Integrated career narrative">
-                <span>Measure</span>
-                <span>Understand</span>
-                <span>Build</span>
-              </div>
-              <p class="career-story-mapping">
-                <strong>Surveying</strong> &rarr; Measure
-                <span>GIS</span> &rarr; Understand
-                <span>IT</span> &rarr; Build
-              </p>
-              <p class="career-story-body">
-                Connecting the physical, spatial and digital worlds.
-              </p>
-            </article>
           </div>
-
+          
           <div class="career-universe-progress" aria-hidden="true">
-            <span class="career-progress-marker is-active">Overview</span>
+           <article class="career-progress-card intro">
+              <span class="career-progress-icon" aria-hidden="true">T</span>
+              <div class="career-progress-copy">
+              <span class="career-progress-index">00</span>
+                <span class="career-progress-title">Introduction</span>
+              </div>
+            </article>
+            <span class="career-progress-marker">Overview</span>
             <article class="career-progress-card survey">
               <span class="career-progress-icon" aria-hidden="true">T</span>
               <div class="career-progress-copy">
@@ -122,9 +133,9 @@ export function renderCareerUniverseSection() {
               </div>
             </article>
             <span class="career-progress-marker">IT</span>
-            <span class="career-progress-marker">Integration</span>
           </div>
         </div>
+        
         <div class="hero-visual career-universe-visual">
           <div id="career-universe-canvas" class="career-universe-canvas" aria-label="Three-planet career universe overview"></div>
         </div>

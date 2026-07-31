@@ -1,8 +1,28 @@
 import * as THREE from "three";
 import { careerUniversePlanets } from "./careerUniverseData.js";
 import { createGISTexture } from "./textures/createGISTexture";
+import worldMapTextureSrc from "../../source/world-map.png";
+import worldMapITTextureSrc from "../../source/world-map-it.png";
+import pythonIconSrc from "../../source/icon/python.svg";
+import javascriptIconSrc from "../../source/icon/javascript.svg";
+import dotnetIconSrc from "../../source/icon/dotnet.svg";
+import reactIconSrc from "../../source/icon/react.svg";
+import mysqlIconSrc from "../../source/icon/mysql.svg";
+import postgresqlIconSrc from "../../source/icon/postgresql.svg";
+import postmanIconSrc from "../../source/icon/postman.svg";
+import nodedotjsIconSrc from "../../source/icon/nodedotjs.svg";
 
 const SURFACE_NORMAL = new THREE.Vector3(0, 0, 1);
+const IT_SATELLITE_ICON_MAP = {
+  Python: pythonIconSrc,
+  JavaScript: javascriptIconSrc,
+  "C#": dotnetIconSrc,
+  React: reactIconSrc,
+  SQL: mysqlIconSrc,
+  "REST APIs": postmanIconSrc,
+  Automation: nodedotjsIconSrc,
+  Databases: postgresqlIconSrc,
+};
 
 function createLabelSprite(text, color, options = {}) {
   const {
@@ -49,6 +69,109 @@ function resolveLayout(width, height) {
   return { scale, cameraZ };
 }
 
+function createSurveyOverlayTexture(image) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return null;
+  }
+
+  canvas.width = image.naturalWidth || image.width;
+  canvas.height = image.naturalHeight || image.height;
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const { data } = imageData;
+
+  for (let index = 0; index < data.length; index += 4) {
+    const red = data[index];
+    const green = data[index + 1];
+    const blue = data[index + 2];
+    const brightness = (red + green + blue) / 3;
+    const mask = THREE.MathUtils.clamp((245 - brightness) / 80, 0, 1);
+
+    data[index] = 255;
+    data[index + 1] = 242;
+    data[index + 2] = 225;
+    data[index + 3] = Math.round(mask * 150);
+  }
+
+  context.putImageData(imageData, 0, 0);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function loadSurveyOverlayTexture(onLoad) {
+  const image = new Image();
+  image.decoding = "async";
+  image.onload = () => {
+    const texture = createSurveyOverlayTexture(image);
+    onLoad?.(texture);
+  };
+  image.onerror = () => {
+    onLoad?.(null);
+  };
+  image.src = worldMapTextureSrc;
+  return image;
+}
+
+function createITOverlayTexture(image) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return null;
+  }
+
+  canvas.width = image.naturalWidth || image.width;
+  canvas.height = image.naturalHeight || image.height;
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const { data } = imageData;
+
+  for (let index = 0; index < data.length; index += 4) {
+    const red = data[index];
+    const green = data[index + 1];
+    const blue = data[index + 2];
+    const alpha = data[index + 3];
+    const brightness = Math.max(red, green, blue);
+    const glowMask = THREE.MathUtils.clamp((brightness - 48) / 160, 0, 1);
+
+    data[index] = 126;
+    data[index + 1] = 222;
+    data[index + 2] = 255;
+    data[index + 3] = Math.round((alpha / 255) * glowMask * 185);
+  }
+
+  context.putImageData(imageData, 0, 0);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function loadITOverlayTexture(onLoad) {
+  const image = new Image();
+  image.decoding = "async";
+  image.onload = () => {
+    const texture = createITOverlayTexture(image);
+    onLoad?.(texture);
+  };
+  image.onerror = () => {
+    onLoad?.(null);
+  };
+  image.src = worldMapITTextureSrc;
+  return image;
+}
+
 function createOrbitPath(radius, color) {
   const geometry = new THREE.RingGeometry(radius - 0.012, radius + 0.012, 96);
   const material = new THREE.MeshBasicMaterial({
@@ -81,6 +204,26 @@ function createLine(points, color, opacity) {
     depthWrite: false,
   });
   return new THREE.Line(geometry, material);
+}
+
+function createIconSprite(iconTexture, scale, opacity = 0.92) {
+  if (!iconTexture) {
+    return null;
+  }
+
+  const material = new THREE.SpriteMaterial({
+    map: iconTexture,
+    transparent: true,
+    opacity,
+    depthTest: false,
+    depthWrite: false,
+  });
+  const sprite = new THREE.Sprite(material);
+  const size = scale * 3.1;
+  sprite.scale.set(size, size, 1);
+  sprite.position.z = scale * 0.28;
+  sprite.renderOrder = 6;
+  return sprite;
 }
 
 function latLonToVector3(radius, latitude, longitude, scale = 1) {
@@ -763,13 +906,14 @@ function createConnectionLine(color) {
   };
 }
 
-function createSatellite(color, satelliteConfig, index) {
+function createSatellite(color, satelliteConfig, index, options = {}) {
   const group = new THREE.Group();
   const pivot = new THREE.Group();
   const anchor = new THREE.Group();
   group.add(pivot);
   pivot.add(anchor);
   anchor.position.set(satelliteConfig.orbitRadius, 0, 0);
+  const iconTexture = options.iconTexture ?? null;
 
   const bodyMaterial = new THREE.MeshBasicMaterial({
     color,
@@ -791,8 +935,14 @@ function createSatellite(color, satelliteConfig, index) {
     new THREE.SphereGeometry(satelliteConfig.scale * 1.8, 18, 18),
     glowMaterial
   );
+  glow.renderOrder = 2;
 
-  anchor.add(body);
+  const icon = createIconSprite(iconTexture, satelliteConfig.scale);
+  if (icon) {
+    anchor.add(icon);
+  } else {
+    anchor.add(body);
+  }
   anchor.add(glow);
 
   const label = createLabelSprite(satelliteConfig.label, color, {
@@ -818,14 +968,24 @@ function createSatellite(color, satelliteConfig, index) {
     group,
     pivot,
     body,
+    icon,
     glow,
     label,
     orbitPath,
     speed: satelliteConfig.speed,
     revealCurrent: 0,
     revealTarget: 0,
-    materials: [bodyMaterial, glowMaterial, orbitPath.material],
-    geometry: [body.geometry, glow.geometry, orbitPath.geometry],
+    materials: [
+      bodyMaterial,
+      ...(icon?.material ? [icon.material] : []),
+      glowMaterial,
+      orbitPath.material,
+    ],
+    geometry: [
+      ...(!icon ? [body.geometry] : []),
+      glow.geometry,
+      orbitPath.geometry,
+    ],
     index,
   };
 }
@@ -836,7 +996,11 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
   const satelliteLayer = new THREE.Group();
   const disciplineLayer = new THREE.Group();
   const isGIS = config.id === "gis";
+  const isSurvey = config.id === "survey";
+  const isIT = config.id === "it";
   const gisOverlayScale = 1.007;
+  const surveyOverlayScale = 1.006;
+  const itOverlayScale = 1.008;
 
   const coreColor =
     config.id === "gis" ? "#1c5a43" : config.id === "it" ? "#1f5f84" : "#b46d3d";
@@ -852,15 +1016,16 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
   });
 
   const surfaceMaterial = new THREE.MeshPhysicalMaterial({
-    color: isGIS ? "#247A57" : config.color,
-    roughness: isGIS ? 0.56 : 0.44,
-    metalness: isGIS ? 0.02 : 0.04,
-    clearcoat: isGIS ? 0.14 : 0.56,
-    clearcoatRoughness: isGIS ? 0.62 : 0.48,
+    color: isGIS ? "#247A57" : isIT ? "#ffffff" : config.color,
+    roughness: isGIS ? 0.56 : isIT ? 0.6 : 0.44,
+    metalness: isGIS ? 0.02 : isIT ? 0.02 : 0.04,
+    clearcoat: isGIS ? 0.14 : isIT ? 0.08 : 0.56,
+    clearcoatRoughness: isGIS ? 0.62 : isIT ? 0.74 : 0.48,
     transparent: true,
-    opacity: 0.88,
-    transmission: isGIS ? 0 : 0.04,
-    thickness: isGIS ? 0.2 : 0.6,
+    opacity: isIT ? 0.98 : 0.88,
+    transmission: isGIS ? 0 : isIT ? 0 : 0.04,
+    thickness: isGIS ? 0.2 : isIT ? 0 : 0.6,
+    map: isIT ? options.itTexture ?? null : null,
   });
 
   const gisOverlayMaterial = isGIS
@@ -868,6 +1033,24 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
         map: options.gisTexture ?? null,
         transparent: true,
         opacity: 0.2,
+        depthWrite: false,
+      })
+    : null;
+
+  const surveyOverlayMaterial = isSurvey
+    ? new THREE.MeshBasicMaterial({
+        map: options.surveyTexture ?? null,
+        transparent: true,
+        opacity: options.surveyTexture ? 0.14 : 0,
+        depthWrite: false,
+      })
+    : null;
+
+  const itOverlayMaterial = isIT
+    ? new THREE.MeshBasicMaterial({
+        map: options.itTexture ?? null,
+        transparent: true,
+        opacity: 0,
         depthWrite: false,
       })
     : null;
@@ -912,6 +1095,22 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
     planetShell.add(gisOverlay);
   }
 
+  const surveyOverlay = isSurvey && surveyOverlayMaterial
+    ? new THREE.Mesh(sharedSphereGeometry, surveyOverlayMaterial)
+    : null;
+  if (surveyOverlay) {
+    surveyOverlay.scale.setScalar(config.radius * surveyOverlayScale);
+    planetShell.add(surveyOverlay);
+  }
+
+  const itOverlay = isIT && itOverlayMaterial
+    ? new THREE.Mesh(sharedSphereGeometry, itOverlayMaterial)
+    : null;
+  if (itOverlay) {
+    itOverlay.scale.setScalar(config.radius * itOverlayScale);
+    planetShell.add(itOverlay);
+  }
+
   const sheenShell = new THREE.Mesh(sharedSphereGeometry, sheenMaterial);
   sheenShell.scale.setScalar(config.radius * 1.018);
   planetShell.add(sheenShell);
@@ -940,7 +1139,13 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
   }
 
   const satellites = (config.satellites || []).map((satelliteConfig, index) => {
-    const satellite = createSatellite(config.color, satelliteConfig, index);
+    const iconTexture =
+      config.id === "it"
+        ? options.satelliteIconTextures?.[satelliteConfig.label] ?? null
+        : null;
+    const satellite = createSatellite(config.color, satelliteConfig, index, {
+      iconTexture,
+    });
     satelliteLayer.add(satellite.group);
     return satellite;
   });
@@ -954,6 +1159,8 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
     core,
     planet,
     gisOverlay,
+    surveyOverlay,
+    itOverlay,
     sheenShell,
     halo,
     accentRing,
@@ -967,6 +1174,8 @@ function createPlanet(config, sharedSphereGeometry, sharedRingGeometry, options 
       coreMaterial,
       surfaceMaterial,
       ...(gisOverlayMaterial ? [gisOverlayMaterial] : []),
+      ...(surveyOverlayMaterial ? [surveyOverlayMaterial] : []),
+      ...(itOverlayMaterial ? [itOverlayMaterial] : []),
       sheenMaterial,
       haloMaterial,
       accentMaterial,
@@ -983,6 +1192,7 @@ export function mountCareerUniverseScene(options = {}) {
   if (!container || container.dataset.mounted === "true") {
     return null;
   }
+  const visual = container.closest(".career-universe-visual");
 
   const width = container.clientWidth;
   const height = container.clientHeight;
@@ -1019,10 +1229,26 @@ export function mountCareerUniverseScene(options = {}) {
   const sphereGeometry = new THREE.SphereGeometry(1, 42, 42);
   const ringGeometry = new THREE.TorusGeometry(1, 0.022, 12, 96);
   const gisTexture = createGISTexture();
+  const textureLoader = new THREE.TextureLoader();
+  const itSatelliteIconTextures = Object.fromEntries(
+    Object.entries(IT_SATELLITE_ICON_MAP).map(([label, src]) => {
+      const texture = textureLoader.load(src);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.needsUpdate = true;
+      return [label, texture];
+    })
+  );
+  let surveyOverlayTexture = null;
+  let surveyOverlayImage = null;
+  let itOverlayTexture = null;
+  let itOverlayImage = null;
 
   const planetNodes = careerUniversePlanets.map((planetConfig) => {
     const node = createPlanet(planetConfig, sphereGeometry, ringGeometry, {
       gisTexture,
+      surveyTexture: surveyOverlayTexture,
+      itTexture: itOverlayTexture,
+      satelliteIconTextures: itSatelliteIconTextures,
     });
     node.group.position.set(
       planetConfig.basePosition.x,
@@ -1039,7 +1265,41 @@ export function mountCareerUniverseScene(options = {}) {
       scaleTarget: 1,
       satelliteRevealCurrent: 0,
       satelliteRevealTarget: 0,
+      surveyOverlayReady: false,
+      itOverlayReady: false,
     };
+  });
+
+  surveyOverlayImage = loadSurveyOverlayTexture((texture) => {
+    surveyOverlayTexture = texture;
+    planetNodes.forEach((node) => {
+      if (node.config.id !== "survey" || !node.surveyOverlay?.material || !texture) {
+        return;
+      }
+      node.surveyOverlay.material.map = texture;
+      node.surveyOverlay.material.needsUpdate = true;
+      node.surveyOverlayReady = true;
+    });
+    renderScene();
+  });
+
+  itOverlayImage = loadITOverlayTexture((texture) => {
+    itOverlayTexture = texture;
+    planetNodes.forEach((node) => {
+      if (node.config.id !== "it" || !texture) {
+        return;
+      }
+      if (node.planet?.material) {
+        node.planet.material.map = texture;
+        node.planet.material.needsUpdate = true;
+      }
+      if (node.itOverlay?.material) {
+        node.itOverlay.material.map = texture;
+        node.itOverlay.material.needsUpdate = true;
+      }
+      node.itOverlayReady = true;
+    });
+    renderScene();
   });
 
   const connectionColor = new THREE.Color("#99b7a8");
@@ -1141,7 +1401,22 @@ export function mountCareerUniverseScene(options = {}) {
   let isActive = true;
   let isAnimating = false;
 
+  function syncVisualBackground(position = currentCameraPosition) {
+    if (!visual || !position) {
+      return;
+    }
+
+    const zoomScale = THREE.MathUtils.clamp(9.6 / Math.max(position.z, 0.01), 0.92, 1.24);
+    const offsetX = THREE.MathUtils.clamp(50 + position.x * 2.8, 44, 56);
+    const offsetY = THREE.MathUtils.clamp(50 - (position.y - 0.18) * 16, 44, 56);
+
+    visual.style.setProperty("--universe-bg-scale", zoomScale.toFixed(4));
+    visual.style.setProperty("--universe-bg-offset-x", `${offsetX.toFixed(2)}%`);
+    visual.style.setProperty("--universe-bg-offset-y", `${offsetY.toFixed(2)}%`);
+  }
+
   function renderScene() {
+    syncVisualBackground();
     renderer.render(scene, camera);
   }
 
@@ -1162,6 +1437,7 @@ export function mountCareerUniverseScene(options = {}) {
     currentLookAt.lerp(targetLookAt, 0.08);
     camera.position.copy(currentCameraPosition);
     camera.lookAt(currentLookAt);
+    syncVisualBackground(currentCameraPosition);
 
     planetNodes.forEach((node, index) => {
       const {
@@ -1170,6 +1446,8 @@ export function mountCareerUniverseScene(options = {}) {
         core,
         planet,
         gisOverlay,
+        surveyOverlay,
+        itOverlay,
         sheenShell,
         halo,
         accentRing,
@@ -1200,10 +1478,21 @@ export function mountCareerUniverseScene(options = {}) {
         (node.satelliteRevealTarget - node.satelliteRevealCurrent) * 0.08;
 
       group.scale.setScalar(node.scaleCurrent);
-      core.material.opacity = 0.72 + node.emphasisCurrent * 0.22;
-      planet.material.opacity = 0.54 + node.emphasisCurrent * 0.38;
+      core.material.opacity = 0.22 + node.emphasisCurrent * 0.22;
+      planet.material.opacity =
+        node.config.id === "it"
+          ? 0.94 + node.emphasisCurrent * 0.06
+          : 0.54 + node.emphasisCurrent * 0.38;
       if (gisOverlay?.material) {
         gisOverlay.material.opacity = 0.08 + node.emphasisCurrent * 0.12;
+      }
+      if (surveyOverlay?.material) {
+        surveyOverlay.material.opacity = node.surveyOverlayReady
+          ? 0.05 + node.emphasisCurrent * 0.78
+          : 0;
+      }
+      if (itOverlay?.material) {
+        itOverlay.material.opacity = 0;
       }
       sheenShell.material.opacity = 0.04 + node.emphasisCurrent * 0.12;
       halo.material.opacity = 0.04 + node.emphasisCurrent * 0.18;
@@ -1231,7 +1520,12 @@ export function mountCareerUniverseScene(options = {}) {
         satellite.group.scale.setScalar(scale);
         satellite.group.visible = satellite.revealCurrent > 0.015;
         satellite.body.material.opacity = satellite.revealCurrent * 0.92;
-        satellite.glow.material.opacity = satellite.revealCurrent * 0.18;
+        if (satellite.icon?.material) {
+          satellite.icon.material.opacity = satellite.revealCurrent * 0.96;
+        }
+        satellite.glow.material.opacity = satellite.icon
+          ? satellite.revealCurrent * 0.08
+          : satellite.revealCurrent * 0.18;
         satellite.orbitPath.material.opacity = satellite.revealCurrent * 0.1;
 
         if (satellite.label?.material) {
@@ -1346,7 +1640,18 @@ export function mountCareerUniverseScene(options = {}) {
 
       sphereGeometry.dispose();
       ringGeometry.dispose();
+      if (surveyOverlayImage) {
+        surveyOverlayImage.onload = null;
+        surveyOverlayImage.onerror = null;
+      }
+      if (itOverlayImage) {
+        itOverlayImage.onload = null;
+        itOverlayImage.onerror = null;
+      }
+      Object.values(itSatelliteIconTextures).forEach((texture) => texture?.dispose?.());
       gisTexture?.dispose?.();
+      surveyOverlayTexture?.dispose?.();
+      itOverlayTexture?.dispose?.();
       renderer.dispose();
       container.dataset.mounted = "false";
       container.innerHTML = "";

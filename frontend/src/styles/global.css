@@ -733,12 +733,13 @@ button {
 }
 
 .career-universe-stage.is-story-focus .career-universe-visual::before {
-  inset: 0;
-  border-radius: 0;
+  inset: 2% 2%;
+  border-radius: 36px;
   background:
-    linear-gradient(90deg, rgba(247, 243, 232, 0.94) 0%, rgba(247, 243, 232, 0.76) 26%, rgba(247, 243, 232, 0.18) 52%, rgba(247, 243, 232, 0.02) 100%),
-    radial-gradient(circle at 24% 50%, rgba(101, 184, 121, 0.12), transparent 34%),
-    radial-gradient(circle at 74% 48%, rgba(38, 141, 179, 0.08), transparent 24%);
+    radial-gradient(circle at 58% 48%, rgba(255, 255, 255, 0.68), transparent 36%),
+    radial-gradient(circle at 34% 68%, rgba(36, 122, 87, 0.06), transparent 22%),
+    radial-gradient(circle at 76% 26%, rgba(38, 141, 179, 0.06), transparent 18%),
+    radial-gradient(circle at 82% 72%, rgba(217, 130, 75, 0.05), transparent 18%);
   filter: blur(0);
 }
 
@@ -749,10 +750,26 @@ button {
 }
 
 .career-universe-visual {
+  --universe-bg-scale: 1;
+  --universe-bg-offset-x: 50%;
+  --universe-bg-offset-y: 50%;
   border-radius: 0;
-  background:
+  background-image:
     radial-gradient(circle at 54% 42%, rgba(255, 255, 255, 0.86), rgba(247, 243, 232, 0.44) 56%, rgba(247, 243, 232, 0.08) 100%),
-    linear-gradient(180deg, rgba(247, 243, 232, 0.2), rgba(255, 255, 255, 0.02));
+    linear-gradient(180deg, rgba(247, 243, 232, 0.2), rgba(255, 255, 255, 0.02)),
+    url("../source/career-universe-bg.png");
+  background-position:
+    center,
+    center,
+    var(--universe-bg-offset-x) var(--universe-bg-offset-y);
+  background-repeat:
+    no-repeat,
+    no-repeat,
+    no-repeat;
+  background-size:
+    100% 100%,
+    100% 100%,
+    calc(100% * var(--universe-bg-scale)) calc(100% * var(--universe-bg-scale));
   contain: paint;
 }
 
