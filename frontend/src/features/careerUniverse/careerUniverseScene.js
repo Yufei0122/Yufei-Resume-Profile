@@ -11,6 +11,7 @@ import mysqlIconSrc from "../../source/icon/mysql.svg";
 import postgresqlIconSrc from "../../source/icon/postgresql.svg";
 import postmanIconSrc from "../../source/icon/postman.svg";
 import nodedotjsIconSrc from "../../source/icon/nodedotjs.svg";
+import autocadIconSrc from "../../source/icon/autocad.svg";
 
 const SURFACE_NORMAL = new THREE.Vector3(0, 0, 1);
 const IT_SATELLITE_ICON_MAP = {
@@ -18,30 +19,25 @@ const IT_SATELLITE_ICON_MAP = {
   JavaScript: javascriptIconSrc,
   "C#": dotnetIconSrc,
   React: reactIconSrc,
-  SQL: mysqlIconSrc,
+  Databases: mysqlIconSrc,
   "REST APIs": postmanIconSrc,
   Automation: nodedotjsIconSrc,
-  Databases: postgresqlIconSrc,
 };
 
 const GIS_SATELLITE_ICON_MAP = {
   Python: pythonIconSrc,
   JavaScript: javascriptIconSrc,
   "C#": dotnetIconSrc,
+  AutoCAD:autocadIconSrc,
   React: reactIconSrc,
-  SQL: mysqlIconSrc,
+  Databases: postgresqlIconSrc,
   "REST APIs": postmanIconSrc,
   Automation: nodedotjsIconSrc,
-  Databases: postgresqlIconSrc,
 };
 
 const SURVEYING_SATELLITE_ICON_MAP = {
   Python: pythonIconSrc,
-  JavaScript: javascriptIconSrc,
   "C#": dotnetIconSrc,
-  React: reactIconSrc,
-  SQL: mysqlIconSrc,
-  "REST APIs": postmanIconSrc,
   Automation: nodedotjsIconSrc,
   Databases: postgresqlIconSrc,
 };
@@ -192,6 +188,58 @@ function loadITOverlayTexture(onLoad) {
   };
   image.src = worldMapITTextureSrc;
   return image;
+}
+
+function createTintableIconTexture(src) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  canvas.width = 256;
+  canvas.height = 256;
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
+
+  if (!context) {
+    return texture;
+  }
+
+  const image = new Image();
+  image.decoding = "async";
+  image.onload = () => {
+    const sourceWidth = image.naturalWidth || image.width || 1;
+    const sourceHeight = image.naturalHeight || image.height || 1;
+    const fit = Math.min(canvas.width / sourceWidth, canvas.height / sourceHeight);
+    const drawWidth = Math.max(1, Math.round(sourceWidth * fit * 0.8));
+    const drawHeight = Math.max(1, Math.round(sourceHeight * fit * 0.8));
+    const offsetX = Math.round((canvas.width - drawWidth) / 2);
+    const offsetY = Math.round((canvas.height - drawHeight) / 2);
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, offsetX, offsetY, drawWidth, drawHeight);
+
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const { data } = imageData;
+    for (let index = 0; index < data.length; index += 4) {
+      const alpha = data[index + 3];
+      if (!alpha) {
+        continue;
+      }
+      data[index] = 255;
+      data[index + 1] = 255;
+      data[index + 2] = 255;
+    }
+
+    context.putImageData(imageData, 0, 0);
+    texture.needsUpdate = true;
+  };
+  image.onerror = () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    texture.needsUpdate = true;
+  };
+  image.src = src;
+
+  return texture;
 }
 
 function createOrbitPath(radius, color) {
@@ -1277,12 +1325,9 @@ export function mountCareerUniverseScene(options = {}) {
   const sphereGeometry = new THREE.SphereGeometry(1, 42, 42);
   const ringGeometry = new THREE.TorusGeometry(1, 0.022, 12, 96);
   const gisTexture = createGISTexture();
-  const textureLoader = new THREE.TextureLoader();
   const itSatelliteIconTextures = Object.fromEntries(
     Object.entries(IT_SATELLITE_ICON_MAP).map(([label, src]) => {
-      const texture = textureLoader.load(src);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.needsUpdate = true;
+      const texture = createTintableIconTexture(src);
       return [label, texture];
     })
   );

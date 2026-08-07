@@ -69,7 +69,7 @@ export function getCareerUniverseStoryState(progress) {
     target: { ...overviewStart.target },
     emphasis: { ...overviewStart.emphasis },
     satellites: { ...overviewStart.satellites },
-    activeIndex: 4,
+    activeIndex: 0,
   };
 
   if (progress <= 0.4) {
@@ -91,7 +91,7 @@ export function getCareerUniverseStoryState(progress) {
         gis: 0,
         it: 0,
       },
-      activeIndex: 1,
+      activeIndex: progress < 0.56 ? 0 : 1,
     };
   }
 
@@ -192,10 +192,17 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
   const stage = section.querySelector(".career-universe-stage");
   const progressItems = Array.from(section.querySelectorAll(".career-progress-marker"));
   const intro = section.querySelector('[data-story-copy="intro"]');
+  const overviewPanel = section.querySelector('[data-story-panel="overview"]');
   const surveyPanel = section.querySelector('[data-story-panel="survey"]');
   const gisPanel = section.querySelector('[data-story-panel="gis"]');
   const itPanel = section.querySelector('[data-story-panel="it"]');
   const integratedPanel = section.querySelector('[data-story-panel="integrated"]');
+  const progressTargets = {
+    overview: 0.47,
+    survey: 0.6,
+    gis: 0.76,
+    it: 0.935,
+  };
   let rafId = 0;
   let currentProgress = 0;
   let targetProgress = 0;
@@ -215,9 +222,10 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
 
   function applyState(progress) {
     const state = getCareerUniverseStoryState(progress);
-    const surveyAmount = plateau(progress, 0.4, 0.5, 0.58, 0.68);
+    const overviewAmount = plateau(progress, 0.4, 0.46, 0.54, 0.6);
+    const surveyAmount = plateau(progress, 0.5, 0.58, 0.62, 0.72);
     const gisAmount = plateau(progress, 0.68, 0.76, 0.8, 0.9);
-    const itAmount = plateau(progress, 0.86, 0.93, 0.96, 0.995);
+    const itAmount = progress >= 0.86 ? ramp(progress, 0.86, 0.93) : 0;
     const integratedAmount = plateau(progress, 0.95, 0.985, 0.999, 1);
     sceneApi.setStoryView({ ...state, integration: integratedAmount });
     section.style.setProperty("--career-story-progress", progress.toFixed(4));
@@ -228,6 +236,7 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
     const introAmount = clamp((1 - ramp(progress, 0.4, 0.5)) * (1 - chapterDominance * 0.55));
 
     applyPanelState(intro, introAmount);
+    applyPanelState(overviewPanel, overviewAmount);
     applyPanelState(surveyPanel, surveyAmount);
     applyPanelState(gisPanel, gisAmount);
     applyPanelState(itPanel, itAmount);
@@ -284,12 +293,40 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
     rafId = window.requestAnimationFrame(step);
   }
 
+  function scrollToStoryTarget(targetKey) {
+    const progress = progressTargets[targetKey];
+    if (typeof progress !== "number") {
+      return;
+    }
+
+    const rect = section.getBoundingClientRect();
+    const sectionTop = window.scrollY + rect.top;
+    const total = Math.max(rect.height - window.innerHeight, 1);
+    const targetY = sectionTop + total * progress;
+    window.scrollTo({
+      top: targetY,
+      behavior: "smooth",
+    });
+  }
+
+  function handleProgressButtonClick(event) {
+    const targetKey = event.currentTarget?.getAttribute("data-story-target");
+    scrollToStoryTarget(targetKey);
+  }
+
+  progressItems.forEach((item) => {
+    item.addEventListener("click", handleProgressButtonClick);
+  });
+
   window.addEventListener("scroll", requestUpdate, { passive: true });
   window.addEventListener("resize", () => requestUpdate(true));
   requestUpdate(true);
 
   return () => {
     window.cancelAnimationFrame(rafId);
+    progressItems.forEach((item) => {
+      item.removeEventListener("click", handleProgressButtonClick);
+    });
     window.removeEventListener("scroll", requestUpdate);
     window.removeEventListener("resize", requestUpdate);
   };

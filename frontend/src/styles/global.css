@@ -472,6 +472,10 @@ button {
   letter-spacing: -0.04em;
 }
 
+.career-story-panel.overview h2 {
+  color: var(--text);
+}
+
 .career-story-panel.survey h2 {
   color: var(--career-survey);
 }
@@ -583,6 +587,8 @@ button {
 }
 
 .career-progress-marker {
+  appearance: none;
+  cursor: pointer;
   padding: 8px 14px;
   border: 1px solid rgba(219, 229, 238, 0.95);
   border-radius: 999px;
@@ -590,6 +596,8 @@ button {
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 600;
+  line-height: 1;
+  font-family: inherit;
   transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
@@ -598,6 +606,11 @@ button {
   border-color: rgba(58, 157, 107, 0.24);
   background: rgba(237, 248, 241, 0.92);
   transform: translateY(-1px);
+}
+
+.career-progress-marker:focus-visible {
+  outline: 2px solid rgba(58, 157, 107, 0.3);
+  outline-offset: 2px;
 }
 
 .career-progress-card {
@@ -1580,11 +1593,64 @@ button {
   margin: 0 auto 24px;
 }
 
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 24px;
+}
+
+.project-filter {
+  appearance: none;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid rgba(219, 229, 238, 0.95);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.project-filter:hover,
+.project-filter.is-active {
+  color: var(--text);
+  border-color: rgba(58, 157, 107, 0.24);
+  background: rgba(237, 248, 241, 0.92);
+  transform: translateY(-1px);
+}
+
+.project-filter:focus-visible {
+  outline: 2px solid rgba(58, 157, 107, 0.28);
+  outline-offset: 2px;
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
   align-items: start;
+}
+
+.project-empty-state {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 10px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}
+
+.project-empty-state h3,
+.project-empty-state p {
+  margin: 0;
 }
 
 .project-card {

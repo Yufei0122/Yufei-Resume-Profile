@@ -46,6 +46,7 @@ const projects = [
   {
     id: "south-daguilar",
     lens: "gis",
+    filters: ["featured", "all", "gis"],
     category: "GIS Analysis",
     title: "South D'Aguilar Suitability Analysis",
     summary:
@@ -57,6 +58,7 @@ const projects = [
   {
     id: "shaoxing-platform",
     lens: "integrated",
+    filters: ["featured", "all", "integrated"],
     category: "GIS + IT Integration",
     title: "Shaoxing Future Community GIS Platform",
     summary:
@@ -68,6 +70,7 @@ const projects = [
   {
     id: "spdms",
     lens: "it",
+    filters: ["featured", "all", "it"],
     category: "IT Development",
     title: "Strategic Plan Management System (SPDMS)",
     summary:
@@ -79,6 +82,7 @@ const projects = [
   {
     id: "ux-design",
     lens: "integrated",
+    filters: ["all", "integrated"],
     category: "UI/UX Design",
     title: "User-Centered Interface Design",
     summary:
@@ -87,6 +91,15 @@ const projects = [
     accent: "pink",
     image: projectUiuxPlaceholder,
   },
+];
+
+const projectFilters = [
+  { id: "gis", label: "GIS" },
+  { id: "it", label: "IT" },
+  { id: "featured", label: "FEATURED" },
+  { id: "all", label: "ALL" },
+  { id: "surveying", label: "SURVEYING" },
+  { id: "integrated", label: "INTEGRATED" },
 ];
 
 let cleanupCareerUniverse = null;
@@ -122,11 +135,39 @@ function renderLensCards() {
     .join("");
 }
 
-function renderProjectCards(activeLens = "all") {
+function renderProjectFilters(activeFilter = "featured") {
+  return projectFilters
+    .map(
+      (filter) => `
+        <button
+          class="project-filter${filter.id === activeFilter ? " is-active" : ""}"
+          type="button"
+          data-project-filter="${filter.id}"
+        >
+          ${filter.label}
+        </button>
+      `
+    )
+    .join("");
+}
+
+function renderProjectCards(activeFilter = "featured") {
   const visibleProjects =
-    activeLens === "all"
+    activeFilter === "all"
       ? projects
-      : projects.filter((project) => project.lens === activeLens || project.lens === "integrated");
+      : projects.filter((project) => project.filters?.includes(activeFilter));
+
+  if (!visibleProjects.length) {
+    return `
+      <article class="project-empty-state">
+        <p class="section-kicker">No Matching Projects Yet</p>
+        <h3>${activeFilter.toUpperCase()}</h3>
+        <p>
+          This category is reserved and can be filled with additional case studies later.
+        </p>
+      </article>
+    `;
+  }
 
   return visibleProjects
     .map(
@@ -168,7 +209,7 @@ export function renderHomePage() {
           <a href="#home">Home</a>
           <a href="#projects">Projects</a>
           <a href="#skills">Skills</a>
-          <a href="#experience">Experience</a>
+          <!--<a href="#experience">Experience</a>-->
           <a href="#contact">Contact</a>
         </nav>
       </header>
@@ -178,7 +219,7 @@ export function renderHomePage() {
           <!-- Hero / Career Universe Section -->
           ${renderCareerUniverseSection()}
 
-          <!-- About Section -->
+          <!-- About Section 
           <section class="about-section" id="about">
             <p class="section-kicker">About Me</p>
             <h2>Hi, I'm <strong>Yufei He.</strong></h2>
@@ -192,7 +233,7 @@ export function renderHomePage() {
               I'm passionate about exploring the intersection of GIS + IT, using technology,
               automation, and data to solve real-world problems and create meaningful impact.
             </p>
-          </section>
+          </section>-->
 
           <!-- Featured Projects Section -->
           <section class="featured-section section-card" id="projects">
@@ -204,8 +245,11 @@ export function renderHomePage() {
                 user-centered design, I turn complex problems into practical solutions.
               </p>
             </div>
+            <div class="project-filters" aria-label="Project Filters">
+              ${renderProjectFilters("featured")}
+            </div>
             <div class="projects-grid" id="projects-grid">
-              ${renderProjectCards("gis")}
+              ${renderProjectCards("featured")}
             </div>
             <div class="featured-footer">
               <span>Interested in working together?</span>
@@ -289,8 +333,32 @@ function bindProjectButtons() {
   });
 }
 
+function bindProjectFilters() {
+  const grid = document.getElementById("projects-grid");
+  const filterButtons = Array.from(document.querySelectorAll("[data-project-filter]"));
+  if (!grid || !filterButtons.length) {
+    return;
+  }
+
+  function applyFilter(filterId) {
+    grid.innerHTML = renderProjectCards(filterId);
+    filterButtons.forEach((button) => {
+      button.classList.toggle("is-active", button.getAttribute("data-project-filter") === filterId);
+    });
+    bindProjectButtons();
+  }
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filterId = button.getAttribute("data-project-filter") || "featured";
+      applyFilter(filterId);
+    });
+  });
+}
+
 export function hydrateHomePage() {
   bindProjectButtons();
+  bindProjectFilters();
   const story = document.querySelector(".career-universe-story");
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 

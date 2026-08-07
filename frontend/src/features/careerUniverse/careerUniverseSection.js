@@ -40,19 +40,19 @@ export function renderCareerUniverseSection() {
           </div>
 
           <div class="career-universe-story-panels" aria-label="Career universe chapters">
-          <article class="career-story-panel intro" data-story-panel="intro">
-              <p class="career-story-step">Introduction</p>
-              <h2>Surveying</h2>
-              <p class="career-story-body">
-                Capturing the physical world with precise and reliable data.
-              </p>
-              <dl class="career-story-education">
-                <div>
-                  <dt>Education</dt>
-                  <dd>Master of Geographic Information Systems</dd>
-                  <dd>The University of Queensland</dd>
-                </div>
-              </dl>
+            <article class="career-story-panel overview" data-story-panel="overview">
+              <p class="career-story-step">00 &mdash; About Me</p>
+             <h2>Hi, I'm <strong>Yufei He.</strong></h2>
+            <p>
+              I'm a GIS and IT professional with a multidisciplinary background in geospatial science,
+              software development, and surveying. I combine spatial thinking with software engineering
+              to build practical, data-driven solutions, from GIS applications and spatial automation
+              to full-stack web systems.
+            </p>
+            <p>
+              I'm passionate about exploring the intersection of GIS + IT, using technology,
+              automation, and data to solve real-world problems and create meaningful impact.
+            </p>
             </article>
 
             <article class="career-story-panel survey" data-story-panel="survey">
@@ -65,8 +65,12 @@ export function renderCareerUniverseSection() {
                 <div>
                   <dt>Education</dt>
                   <dd>Bachelor of Surveying and Mapping Engineering</dd>
-                  <dd>City Institution of Dalian University of Technology</dd>
+                  <ddd>City Institution of Dalian University of Technology</ddd>
+                  <dd>GPA:3.71/4.0</dd>
                 </div>
+                <button class="project-link" type="button">
+                    View Project Details &rarr;
+                </button>
               </dl>
             </article>
 
@@ -79,9 +83,13 @@ export function renderCareerUniverseSection() {
               <dl class="career-story-education">
                 <div>
                   <dt>Education</dt>
-                  <dd>Master of Geographic Information Systems</dd>
-                  <dd>The University of Queensland</dd>
+                  <dd>Master of Geographic Information Science</dd>
+                  <ddd>The University of Queensland</ddd>
+                  <dd>GPA:5.83/7.0</dd>
                 </div>
+                <button class="project-link" type="button">
+                  Explore projects &rarr;
+                </button>
               </dl>
             </article>
 
@@ -94,13 +102,18 @@ export function renderCareerUniverseSection() {
               <dl class="career-story-education">
                 <div>
                   <dt>Education</dt>
-                  <dd>Master of Information Technology</dd>
-                  <dd>Queensland University of Technology</dd>
+                  <dd>Master of Information Technology (Computer Science)</dd>
+                  <ddd>Queensland University of Technology</ddd>
+                  <dd>GPA:5.875/7.0</dd>
                 </div>
+                <button class="project-link" type="button">
+                    Explore projects &rarr;
+                  </button>
               </dl>
+            </article>
           </div>
           
-          <div class="career-universe-progress" aria-hidden="true">
+          <div class="career-universe-progress" aria-label="Career universe navigation">
            <article class="career-progress-card intro">
               <span class="career-progress-icon" aria-hidden="true">T</span>
               <div class="career-progress-copy">
@@ -108,7 +121,7 @@ export function renderCareerUniverseSection() {
                 <span class="career-progress-title">Introduction</span>
               </div>
             </article>
-            <span class="career-progress-marker">Overview</span>
+            <button class="career-progress-marker" type="button" data-story-target="overview">Overview</button>
             <article class="career-progress-card survey">
               <span class="career-progress-icon" aria-hidden="true">T</span>
               <div class="career-progress-copy">
@@ -116,7 +129,7 @@ export function renderCareerUniverseSection() {
                 <span class="career-progress-title">Measure</span>
               </div>
             </article>
-            <span class="career-progress-marker">Surveying</span>
+            <button class="career-progress-marker" type="button" data-story-target="survey">Surveying</button>
             <article class="career-progress-card gis">
               <span class="career-progress-icon" aria-hidden="true">&#9633;</span>
               <div class="career-progress-copy">
@@ -124,7 +137,7 @@ export function renderCareerUniverseSection() {
                 <span class="career-progress-title">Understand</span>
               </div>
             </article>
-            <span class="career-progress-marker">GIS</span>
+            <button class="career-progress-marker" type="button" data-story-target="gis">GIS</button>
             <article class="career-progress-card it">
               <span class="career-progress-icon" aria-hidden="true">&lt;/&gt;</span>
               <div class="career-progress-copy">
@@ -132,7 +145,7 @@ export function renderCareerUniverseSection() {
                 <span class="career-progress-title">Build</span>
               </div>
             </article>
-            <span class="career-progress-marker">IT</span>
+            <button class="career-progress-marker" type="button" data-story-target="it">IT</button>
           </div>
         </div>
         
