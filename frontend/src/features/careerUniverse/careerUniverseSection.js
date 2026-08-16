@@ -69,7 +69,7 @@ export function renderCareerUniverseSection() {
                   <dd>GPA:3.71/4.0</dd>
                 </div>
                 <button class="project-link" type="button">
-                    View Project Details &rarr;
+                    Explore projects &rarr;
                 </button>
               </dl>
             </article>

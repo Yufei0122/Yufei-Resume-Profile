@@ -2,6 +2,12 @@ import projectGisPlaceholder from "../source/project-gis-placeholder.svg";
 import projectIntegratedPlaceholder from "../source/project-integrated-placeholder.svg";
 import projectItPlaceholder from "../source/project-it-placeholder.svg";
 import projectUiuxPlaceholder from "../source/project-uiux-placeholder.svg";
+import finalGeomReport from "../source/projects/final-GEOM7005_Report.pdf";
+import finalGeomReportCover from "../source/projects/final-report.png";
+import uqFloodRiskReport from "../source/projects/UQFloodRisk_Report_S4835200_Yufei_He.pdf";
+import uqMapDirectory from "../source/projects/UQMap_InformationDiroctory.pdf";
+import shaoxingPlatform from "../source/projects/绍兴未来社区演示1.0.mp4";
+import aimmiHomePage from "../source/projects/AI-mmi-Home-Desktop.png";
 import gisIcon from "../source/icon-gis.png";
 import itIcon from "../source/icon-it.png";
 import integratedIcon from "../source/icon-integrated.png";
@@ -51,9 +57,38 @@ const projects = [
     title: "South D'Aguilar Suitability Analysis",
     summary:
       "Multi-criteria analysis to identify suitable land for renewable energy development in South D'Aguilar.",
+    tags: ["Featured","ArcGIS Pro", "MCDA", "Weighted Overlay"],
+    accent: "green",
+    image: finalGeomReportCover,
+    href: finalGeomReport,
+    useDocumentPreview: false,
+  },
+  {
+    id: "uq-flood-risk",
+    lens: "gis",
+    filters: ["all", "gis"],
+    category: "GIS Analysis",
+    title: "UQ Flood Risk Assessment",
+    summary:
+      "Multi-criteria analysis to identify suitable land for renewable energy development in South D'Aguilar.",
     tags: ["ArcGIS Pro", "MCDA", "Weighted Overlay"],
     accent: "green",
     image: projectGisPlaceholder,
+    href: uqFloodRiskReport,
+    useDocumentPreview: true,
+  },
+  {
+    id: "uq-information-directory",
+    lens: "gis",
+    filters: ["all", "gis"],
+    category: "GIS Analysis",
+    title: "UQ Information Directory",
+    summary:
+      "Multi-criteria analysis to identify suitable land for renewable energy development in South D'Aguilar.",
+    tags: ["ArcGIS Pro", "MCDA", "Weighted Overlay"],
+    accent: "green",
+    image: projectGisPlaceholder,
+    href: uqMapDirectory,
   },
   {
     id: "shaoxing-platform",
@@ -63,9 +98,10 @@ const projects = [
     title: "Shaoxing Future Community GIS Platform",
     summary:
       "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
-    tags: ["ArcGIS Engine", "C#", "WPF", "SQL Server"],
+    tags: ["Featured", "ArcGIS Engine", "C#", "WPF", "SQL Server"],
     accent: "violet",
     image: projectIntegratedPlaceholder,
+    href: shaoxingPlatform,
   },
   {
     id: "spdms",
@@ -75,14 +111,14 @@ const projects = [
     title: "Strategic Plan Management System (SPDMS)",
     summary:
       "A full-stack web system for strategic planning, monitoring, and reporting to improve operational efficiency.",
-    tags: ["Laravel", "MySQL", "JavaScript", "PHP"],
+    tags: ["Featured","Laravel", "MySQL", "JavaScript", "PHP"],
     accent: "orange",
     image: projectItPlaceholder,
   },
   {
     id: "ux-design",
     lens: "integrated",
-    filters: ["all", "integrated"],
+    filters: ["all", "it"],
     category: "UI/UX Design",
     title: "User-Centered Interface Design",
     summary:
@@ -90,14 +126,28 @@ const projects = [
     tags: ["Figma", "UI Design", "Prototyping"],
     accent: "pink",
     image: projectUiuxPlaceholder,
+    href: aimmiHomePage,
+  },
+  {
+    id: "AI-mmi-design",
+    lens: "integrated",
+    filters: ["all", "it"],
+    category: "UI/UX Design",
+    title: "AI-mmi Home Page Design",
+    summary:
+      "Designing intuitive and responsive interfaces that improve usability and engagement.",
+    tags: ["Figma", "UI Design", "Prototyping"],
+    accent: "pink",
+    image: aimmiHomePage,
+    href: "https://www.figma.com/proto/DqPsTtZJj9IXabiFHEMgFS/AI-mmi-Design?node-id=1-84&t=9AAYIzJoOwwOW7bA-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A84",
   },
 ];
 
 const projectFilters = [
-  { id: "gis", label: "GIS" },
-  { id: "it", label: "IT" },
   { id: "featured", label: "FEATURED" },
   { id: "all", label: "ALL" },
+  { id: "gis", label: "GIS" },
+  { id: "it", label: "IT" },
   { id: "surveying", label: "SURVEYING" },
   { id: "integrated", label: "INTEGRATED" },
 ];
@@ -151,6 +201,29 @@ function renderProjectFilters(activeFilter = "featured") {
     .join("");
 }
 
+function renderProjectPreview(project) {
+  const isPdfLink =
+    project.useDocumentPreview !== false &&
+    typeof project.href === "string" &&
+    /\.pdf($|[?#])/i.test(project.href);
+
+  if (isPdfLink) {
+    return `
+      <div class="project-preview">
+        <iframe
+          class="project-preview-frame"
+          src="${project.href}#toolbar=0&navpanes=0&scrollbar=0&page=1&view=FitH"
+          title="${project.title} preview"
+          loading="lazy"
+          tabindex="-1"
+        ></iframe>
+      </div>
+    `;
+  }
+
+  return `<img class="project-image" src="${project.image}" alt="${project.title} placeholder" />`;
+}
+
 function renderProjectCards(activeFilter = "featured") {
   const visibleProjects =
     activeFilter === "all"
@@ -181,13 +254,13 @@ function renderProjectCards(activeFilter = "featured") {
             </div>
           </div>
           <p class="project-summary">${project.summary}</p>
-          <img class="project-image" src="${project.image}" alt="${project.title} placeholder" />
+          ${renderProjectPreview(project)}
           <div class="project-tags">
             ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
           </div>
-          <button class="project-link" type="button" data-project="${project.id}">
+          <a class="project-link" href="${project.href}" target="_blank" rel="noreferrer">
             View Project Details &rarr;
-          </button>
+          </a>
         </article>
       `
     )
