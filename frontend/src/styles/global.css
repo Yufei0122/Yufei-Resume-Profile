@@ -2522,9 +2522,9 @@ button {
     max-width: none;
   }
 
-  .career-universe-stage,
-  .career-universe-scroll-track,
-  .career-universe-summaries {
+  .career-universe-story:not(.is-compact-3d) .career-universe-stage,
+  .career-universe-story:not(.is-compact-3d) .career-universe-scroll-track,
+  .career-universe-story:not(.is-compact-3d) .career-universe-summaries {
     display: none !important;
   }
 
@@ -2541,11 +2541,45 @@ button {
     min-height: auto;
   }
 
+  .career-universe-story.is-compact-3d .career-universe-section {
+    display: block !important;
+    min-height: auto;
+    padding: 0 20px 28px;
+  }
+
+  .career-universe-story.is-compact-3d .hero-copy,
+  .career-universe-story.is-compact-3d .career-universe-scroll-track,
+  .career-universe-story.is-compact-3d .career-universe-progress,
+  .career-universe-story.is-compact-3d .career-universe-story-panels,
+  .career-universe-story.is-compact-3d .career-universe-summaries {
+    display: none !important;
+  }
+
   .hero-visual {
     min-height: 520px;
     height: 520px;
     padding-left: 0;
     margin-top: 8px;
+  }
+
+  .career-universe-story.is-compact-3d .hero-visual {
+    min-height: 360px;
+    height: 360px;
+    margin-top: 0;
+    border-radius: 28px;
+  }
+
+  .career-universe-story.is-compact-3d .career-universe-visual {
+    display: block !important;
+    border-radius: 28px;
+  }
+
+  .career-universe-story.is-compact-3d .career-universe-visual::before {
+    border-radius: 28px;
+  }
+
+  .career-universe-story.is-compact-3d .career-universe-canvas {
+    min-height: 360px;
   }
 
   .career-universe-stage.is-story-hero .career-universe-progress {

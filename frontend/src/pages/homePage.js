@@ -2,12 +2,15 @@ import projectGisPlaceholder from "../source/project-gis-placeholder.svg";
 import projectIntegratedPlaceholder from "../source/project-integrated-placeholder.svg";
 import projectItPlaceholder from "../source/project-it-placeholder.svg";
 import projectUiuxPlaceholder from "../source/project-uiux-placeholder.svg";
+import projectInprogressPlaceholder from "../source/project-inprogress-placeholder.png";
 import finalGeomReport from "../source/projects/final-GEOM7005_Report.pdf";
 import finalGeomReportCover from "../source/projects/final-report.png";
 import uqFloodRiskReport from "../source/projects/UQFloodRisk_Report_S4835200_Yufei_He.pdf";
 import uqMapDirectory from "../source/projects/UQMap_InformationDiroctory.pdf";
-import shaoxingPlatform from "../source/projects/绍兴未来社区演示1.0.mp4";
+import shaoxingPlatform from "../source/projects/shaoxing-platform.png";
+import drbotPlatform from "../source/projects/DRBOT-Platform.jpeg";
 import aimmiHomePage from "../source/projects/AI-mmi-Home-Desktop.png";
+import humanCenteredDesign from "../source/projects/Human-Centered-Design.png";
 import gisIcon from "../source/icon-gis.png";
 import itIcon from "../source/icon-it.png";
 import integratedIcon from "../source/icon-integrated.png";
@@ -100,8 +103,33 @@ const projects = [
       "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
     tags: ["Featured", "ArcGIS Engine", "C#", "WPF", "SQL Server"],
     accent: "violet",
-    image: projectIntegratedPlaceholder,
-    href: shaoxingPlatform,
+    image: shaoxingPlatform,
+  },
+  {
+    id: "DRBOT-platform",
+    lens: "integrated",
+    filters: [ "all", "integrated"],
+    category: "GIS + IT Integration",
+    title: "DRBOT Platform",
+    summary:
+      "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
+    tags: [ "Leaflet", "Python", "SQL Server"],
+    accent: "violet",
+    image: drbotPlatform,
+    href: "https://github.com/Danica-YI/DR.BOT",
+  },
+  {
+    id: "Lightening-World-platform",
+    lens: "integrated",
+    filters: [ "all", "integrated"],
+    category: "GIS + IT Integration",
+    title: "Lightning World Platform",
+    summary:
+      "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
+    tags: [ "OpenLayers", "HTML","Python", "SQL Server"],
+    accent: "violet",
+    image: projectInprogressPlaceholder,
+    href: 'https://github.com/Yufei0122/Lighting-World',
   },
   {
     id: "spdms",
@@ -116,17 +144,30 @@ const projects = [
     image: projectItPlaceholder,
   },
   {
-    id: "ux-design",
+    id: "Leave-Shift-Manager",
+    lens: "integrated",
+    filters: ["all", "it"],
+    category: "IT Development",
+    title: "Leave and Shift Management System",
+    summary:
+      "Designing intuitive and responsive interfaces that improve usability and engagement.",
+    tags: ["Figma", "MangoDB", "JavaScript", "Node.js", "Express.js", "React", "UI/UX Design"],
+    accent: "orange",
+    image: projectItPlaceholder,
+    href: "https://github.com/Yufei0122/Leave-Shift-Manager",
+  },
+  {
+    id: "human-centered-design",
     lens: "integrated",
     filters: ["all", "it"],
     category: "UI/UX Design",
-    title: "User-Centered Interface Design",
+    title: "Human-Centered Interface Design",
     summary:
       "Designing intuitive and responsive interfaces that improve usability and engagement.",
-    tags: ["Figma", "UI Design", "Prototyping"],
+    tags: ["Figma", "Human-Centered Design", "Travelly","UI/UX Design", "Prototyping"],
     accent: "pink",
-    image: projectUiuxPlaceholder,
-    href: aimmiHomePage,
+    image: humanCenteredDesign,
+    href: "https://www.figma.com/proto/5rcLgCjVmHMdQSYB4WHM5j/IFN637-A3?node-id=1-2&p=f&t=bTtZApnTZ3AnvscI-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2&show-proto-sidebar=11",
   },
   {
     id: "AI-mmi-design",
@@ -136,10 +177,10 @@ const projects = [
     title: "AI-mmi Home Page Design",
     summary:
       "Designing intuitive and responsive interfaces that improve usability and engagement.",
-    tags: ["Figma", "UI Design", "Prototyping"],
+    tags: ["Figma", "UI/UX Design", "Prototyping"],
     accent: "pink",
     image: aimmiHomePage,
-    href: "https://www.figma.com/proto/DqPsTtZJj9IXabiFHEMgFS/AI-mmi-Design?node-id=1-84&t=9AAYIzJoOwwOW7bA-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A84",
+    href: "https://www.figma.com/proto/DqPsTtZJj9IXabiFHEMgFS/AI-mmi-Design?node-id=1-84&p=f&t=leFRnJWV8a2JlWaK-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A84",
   },
 ];
 
@@ -148,14 +189,47 @@ const projectFilters = [
   { id: "all", label: "ALL" },
   { id: "gis", label: "GIS" },
   { id: "it", label: "IT" },
-  { id: "surveying", label: "SURVEYING" },
   { id: "integrated", label: "INTEGRATED" },
+  { id: "surveying", label: "SURVEYING" },
 ];
 
 let cleanupCareerUniverse = null;
 let cleanupCareerUniverseScroll = null;
 let cleanupCareerUniverseMode = null;
 let cleanupCareerUniverseActivity = null;
+
+function createCompactCareerUniverseCycle(sceneApi) {
+  if (!sceneApi) {
+    return () => {};
+  }
+
+  const focusProgressSequence = [0.6, 0.84, 0.975];
+  let frameId = 0;
+  let startedAt = performance.now();
+
+  function tick(now) {
+    const elapsed = now - startedAt;
+    const cycleDuration = 18000;
+    const segmentDuration = cycleDuration / focusProgressSequence.length;
+    const index = Math.floor((elapsed % cycleDuration) / segmentDuration);
+    const progress = focusProgressSequence[index] ?? focusProgressSequence[0];
+    sceneApi.setStoryView({
+      ...getCareerUniverseStoryState(progress),
+      integration: 0,
+    });
+    frameId = window.requestAnimationFrame(tick);
+  }
+
+  sceneApi.setStoryView({
+    ...getCareerUniverseStoryState(focusProgressSequence[0]),
+    integration: 0,
+  });
+  frameId = window.requestAnimationFrame(tick);
+
+  return () => {
+    window.cancelAnimationFrame(frameId);
+  };
+}
 
 function supportsWebGL() {
   try {
@@ -224,6 +298,15 @@ function renderProjectPreview(project) {
   return `<img class="project-image" src="${project.image}" alt="${project.title} placeholder" />`;
 }
 
+function renderProjectLink(project) {
+  const hasLink = typeof project.href === "string" && project.href.trim().length > 0;
+  const href = hasLink ? project.href : "#contact";
+  const label = hasLink ? "View Project Details &rarr;" : "Want to know more? Talk to me &rarr;";
+  const externalAttrs = hasLink && !href.startsWith("#") ? ' target="_blank" rel="noreferrer"' : "";
+
+  return `<a class="project-link" href="${href}"${externalAttrs}>${label}</a>`;
+}
+
 function renderProjectCards(activeFilter = "featured") {
   const visibleProjects =
     activeFilter === "all"
@@ -258,9 +341,7 @@ function renderProjectCards(activeFilter = "featured") {
           <div class="project-tags">
             ${project.tags.map((tag) => `<span>${tag}</span>`).join("")}
           </div>
-          <a class="project-link" href="${project.href}" target="_blank" rel="noreferrer">
-            View Project Details &rarr;
-          </a>
+          ${renderProjectLink(project)}
         </article>
       `
     )
@@ -454,12 +535,14 @@ export function hydrateHomePage() {
     const reducedMotion = reducedMotionQuery.matches;
     const compactMode = window.innerWidth <= 860;
     const webglAvailable = supportsWebGL();
+    const compact3dMode = compactMode && webglAvailable && !reducedMotion;
     const staticMode = reducedMotion || compactMode;
 
-    story.classList.toggle("is-static", staticMode || !webglAvailable);
+    story.classList.toggle("is-compact-3d", compact3dMode);
+    story.classList.toggle("is-static", (!compact3dMode && staticMode) || !webglAvailable);
     story.classList.toggle("is-webgl-disabled", !webglAvailable);
 
-    if (compactMode) {
+    if (compactMode && !compact3dMode) {
       return;
     }
 
@@ -468,7 +551,7 @@ export function hydrateHomePage() {
     }
 
     const sceneApi = mountCareerUniverseScene({
-      staticMode,
+      staticMode: compact3dMode ? false : staticMode,
       compactMode,
     });
     cleanupCareerUniverse = sceneApi?.cleanup ?? null;
@@ -476,6 +559,12 @@ export function hydrateHomePage() {
     if (!sceneApi) {
       story.classList.add("is-webgl-disabled");
       story.classList.add("is-static");
+      return;
+    }
+
+    if (compact3dMode) {
+      cleanupCareerUniverseScroll = createCompactCareerUniverseCycle(sceneApi);
+      sceneApi.setActive?.(true);
       return;
     }
 

@@ -34,6 +34,19 @@ function plateau(progress, enterStart, enterEnd, exitStart, exitEnd) {
   return clamp(Math.min(fadeIn, fadeOut));
 }
 
+const STORY_TIMING = {
+  heroEnd: 0.38,
+  surveyMoveEnd: 0.54,
+  surveyHoldEnd: 0.66,
+  gisMoveEnd: 0.8,
+  gisHoldEnd: 0.89,
+  itMoveEnd: 0.97,
+  itHoldEnd: 0.995,
+  surveySatelliteStart: 0.48,
+  gisSatelliteStart: 0.74,
+  itSatelliteStart: 0.92,
+};
+
 export function getCareerUniverseStoryState(progress) {
   const overviewStart = {
     camera: { x: -0.46, y: 0.18, z: 12.8 },
@@ -72,12 +85,14 @@ export function getCareerUniverseStoryState(progress) {
     activeIndex: 0,
   };
 
-  if (progress <= 0.4) {
+  if (progress <= STORY_TIMING.heroEnd) {
     return overviewStart;
   }
 
-  if (progress <= 0.58) {
-    const t = smoothstep((progress - 0.4) / 0.18);
+  if (progress <= STORY_TIMING.surveyMoveEnd) {
+    const t = smoothstep(
+      (progress - STORY_TIMING.heroEnd) / (STORY_TIMING.surveyMoveEnd - STORY_TIMING.heroEnd)
+    );
     return {
       camera: mixVector(overviewStart.camera, surveyFocus.camera, t),
       target: mixVector(overviewStart.target, surveyFocus.target, t),
@@ -87,27 +102,32 @@ export function getCareerUniverseStoryState(progress) {
         it: mix(overviewStart.emphasis.it, surveyFocus.emphasis.it, t),
       },
       satellites: {
-        survey: ramp(progress, 0.48, 0.58),
+        survey: ramp(progress, STORY_TIMING.surveySatelliteStart, STORY_TIMING.surveyMoveEnd),
         gis: 0,
         it: 0,
       },
-      activeIndex: progress < 0.56 ? 0 : 1,
+      activeIndex: progress < STORY_TIMING.surveyMoveEnd - 0.02 ? 0 : 1,
     };
   }
 
-  if (progress <= 0.62) {
+  if (progress <= STORY_TIMING.surveyHoldEnd) {
     return {
       ...surveyFocus,
       satellites: {
-        survey: 0.82 + ramp(progress, 0.58, 0.62) * 0.18,
+        survey:
+          0.82 +
+          ramp(progress, STORY_TIMING.surveyMoveEnd, STORY_TIMING.surveyHoldEnd) * 0.18,
         gis: 0,
         it: 0,
       },
     };
   }
 
-  if (progress <= 0.74) {
-    const t = smoothstep((progress - 0.62) / 0.12);
+  if (progress <= STORY_TIMING.gisMoveEnd) {
+    const t = smoothstep(
+      (progress - STORY_TIMING.surveyHoldEnd) /
+        (STORY_TIMING.gisMoveEnd - STORY_TIMING.surveyHoldEnd)
+    );
     return {
       camera: mixVector(surveyFocus.camera, gisFocus.camera, t),
       target: mixVector(surveyFocus.target, gisFocus.target, t),
@@ -118,26 +138,28 @@ export function getCareerUniverseStoryState(progress) {
       },
       satellites: {
         survey: mix(1, 0, t),
-        gis: ramp(progress, 0.68, 0.74),
+        gis: ramp(progress, STORY_TIMING.gisSatelliteStart, STORY_TIMING.gisMoveEnd),
         it: 0,
       },
       activeIndex: 2,
     };
   }
 
-  if (progress <= 0.78) {
+  if (progress <= STORY_TIMING.gisHoldEnd) {
     return {
       ...gisFocus,
       satellites: {
         survey: 0,
-        gis: 0.86 + ramp(progress, 0.74, 0.78) * 0.14,
+        gis: 0.86 + ramp(progress, STORY_TIMING.gisMoveEnd, STORY_TIMING.gisHoldEnd) * 0.14,
         it: 0,
       },
     };
   }
 
-  if (progress <= 0.92) {
-    const t = smoothstep((progress - 0.78) / 0.14);
+  if (progress <= STORY_TIMING.itMoveEnd) {
+    const t = smoothstep(
+      (progress - STORY_TIMING.gisHoldEnd) / (STORY_TIMING.itMoveEnd - STORY_TIMING.gisHoldEnd)
+    );
     return {
       camera: mixVector(gisFocus.camera, itFocus.camera, t),
       target: mixVector(gisFocus.target, itFocus.target, t),
@@ -149,24 +171,24 @@ export function getCareerUniverseStoryState(progress) {
       satellites: {
         survey: 0,
         gis: mix(1, 0, t),
-        it: ramp(progress, 0.86, 0.92),
+        it: ramp(progress, STORY_TIMING.itSatelliteStart, STORY_TIMING.itMoveEnd),
       },
       activeIndex: 3,
     };
   }
 
-  if (progress <= 0.95) {
+  if (progress <= STORY_TIMING.itHoldEnd) {
     return {
       ...itFocus,
       satellites: {
         survey: 0,
         gis: 0,
-        it: 0.88 + ramp(progress, 0.92, 0.95) * 0.12,
+        it: 0.88 + ramp(progress, STORY_TIMING.itMoveEnd, STORY_TIMING.itHoldEnd) * 0.12,
       },
     };
   }
 
-  const t = smoothstep((progress - 0.95) / 0.05);
+  const t = smoothstep((progress - STORY_TIMING.itHoldEnd) / (1 - STORY_TIMING.itHoldEnd));
   return {
     camera: mixVector(itFocus.camera, overviewEnd.camera, t),
     target: mixVector(itFocus.target, overviewEnd.target, t),
@@ -198,10 +220,10 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
   const itPanel = section.querySelector('[data-story-panel="it"]');
   const integratedPanel = section.querySelector('[data-story-panel="integrated"]');
   const progressTargets = {
-    overview: 0.47,
+    overview: 0.46,
     survey: 0.6,
-    gis: 0.76,
-    it: 0.935,
+    gis: 0.84,
+    it: 0.975,
   };
   let rafId = 0;
   let currentProgress = 0;
@@ -222,18 +244,18 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
 
   function applyState(progress) {
     const state = getCareerUniverseStoryState(progress);
-    const overviewAmount = plateau(progress, 0.4, 0.46, 0.54, 0.6);
-    const surveyAmount = plateau(progress, 0.5, 0.58, 0.62, 0.72);
-    const gisAmount = plateau(progress, 0.68, 0.76, 0.8, 0.9);
-    const itAmount = progress >= 0.86 ? ramp(progress, 0.86, 0.93) : 0;
-    const integratedAmount = plateau(progress, 0.95, 0.985, 0.999, 1);
+    const overviewAmount = plateau(progress, 0.38, 0.46, 0.56, 0.64);
+    const surveyAmount = plateau(progress, 0.5, 0.6, 0.66, 0.78);
+    const gisAmount = plateau(progress, 0.74, 0.82, 0.89, 0.95);
+    const itAmount = plateau(progress, 0.92, 0.97, 0.998, 1);
+    const integratedAmount = plateau(progress, 0.995, 0.998, 0.9995, 1);
     sceneApi.setStoryView({ ...state, integration: integratedAmount });
     section.style.setProperty("--career-story-progress", progress.toFixed(4));
     progressItems.forEach((item, index) => {
       item.classList.toggle("is-active", index === state.activeIndex);
     });
     const chapterDominance = Math.max(surveyAmount, gisAmount, itAmount, integratedAmount);
-    const introAmount = clamp((1 - ramp(progress, 0.4, 0.5)) * (1 - chapterDominance * 0.55));
+    const introAmount = clamp((1 - ramp(progress, 0.38, 0.5)) * (1 - chapterDominance * 0.55));
 
     applyPanelState(intro, introAmount);
     applyPanelState(overviewPanel, overviewAmount);
@@ -242,10 +264,10 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
     applyPanelState(itPanel, itAmount);
     applyPanelState(integratedPanel, integratedAmount);
     if (stage) {
-      stage.classList.toggle("is-story-focus", progress > 0.4);
-      stage.classList.toggle("is-story-hero", progress <= 0.4);
-      stage.classList.toggle("is-story-conclusion", progress > 0.94);
-      stage.style.setProperty("--story-layout-progress", ramp(progress, 0.4, 0.52).toFixed(4));
+      stage.classList.toggle("is-story-focus", progress > STORY_TIMING.heroEnd);
+      stage.classList.toggle("is-story-hero", progress <= STORY_TIMING.heroEnd);
+      stage.classList.toggle("is-story-conclusion", progress > 0.992);
+      stage.style.setProperty("--story-layout-progress", ramp(progress, 0.38, 0.54).toFixed(4));
       stage.style.opacity = "";
       stage.style.transform = "";
     }
