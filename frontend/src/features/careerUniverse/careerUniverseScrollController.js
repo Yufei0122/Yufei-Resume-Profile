@@ -340,8 +340,9 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
     item.addEventListener("click", handleProgressButtonClick);
   });
 
+  const handleResize = () => requestUpdate(true);
   window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", () => requestUpdate(true));
+  window.addEventListener("resize", handleResize);
   requestUpdate(true);
 
   return () => {
@@ -350,6 +351,6 @@ export function createCareerUniverseScrollController({ section, sceneApi }) {
       item.removeEventListener("click", handleProgressButtonClick);
     });
     window.removeEventListener("scroll", requestUpdate);
-    window.removeEventListener("resize", requestUpdate);
+    window.removeEventListener("resize", handleResize);
   };
 }

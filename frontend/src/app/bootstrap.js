@@ -31,6 +31,7 @@ export function bootstrap() {
   }
 
   appRoot.innerHTML = renderHomePage();
-  return { page: "home" };
+  const sectionId = hash.startsWith("#/") ? undefined : hash.slice(1) || undefined;
+  return { page: "home", sectionId };
 }
 

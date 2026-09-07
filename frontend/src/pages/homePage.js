@@ -9,17 +9,16 @@ import uqFloodRiskReport from "../source/projects/UQFloodRisk_Report_S4835200_Yu
 import uqMapDirectory from "../source/projects/UQMap_InformationDiroctory.pdf";
 import shaoxingPlatform from "../source/projects/shaoxing-platform.png";
 import drbotPlatform from "../source/projects/DRBOT-Platform.jpeg";
+import spdmPlatform from "../source/projects/SPDM-logo.png";
+import resumeProfilePreview from "../source/projects/yufei-resume-profile.svg";
 import aimmiHomePage from "../source/projects/AI-mmi-Home-Desktop.png";
-import humanCenteredDesign from "../source/projects/Human-Centered-Design.png";
+import humanCenteredDesign from "../source/projects/Human-centered-design.png";
 import gisIcon from "../source/icon-gis.png";
 import itIcon from "../source/icon-it.png";
 import integratedIcon from "../source/icon-integrated.png";
+import { renderExperienceMapSection, mountExperienceMapSection } from "../features/experienceMap/experienceMapSection.js";
 import { renderCareerUniverseSection } from "../features/careerUniverse/careerUniverseSection.js";
-import { mountCareerUniverseScene } from "../features/careerUniverse/careerUniverseScene.js";
-import {
-  createCareerUniverseScrollController,
-  getCareerUniverseStoryState,
-} from "../features/careerUniverse/careerUniverseScrollController.js";
+import { mountCareerUniverseMobile } from "../features/careerUniverse/careerUniverseMobile.js";
 
 const lenses = [
   {
@@ -73,7 +72,7 @@ const projects = [
     category: "GIS Analysis",
     title: "UQ Flood Risk Assessment",
     summary:
-      "Multi-criteria analysis to identify suitable land for renewable energy development in South D'Aguilar.",
+      "Conducted GIS-based flood risk assessment of UQ buildings and sports facilities using flood frequency, affected area, and tolerability criteria.",
     tags: ["ArcGIS Pro", "MCDA", "Weighted Overlay"],
     accent: "green",
     image: projectGisPlaceholder,
@@ -87,7 +86,7 @@ const projects = [
     category: "GIS Analysis",
     title: "UQ Information Directory",
     summary:
-      "Multi-criteria analysis to identify suitable land for renewable energy development in South D'Aguilar.",
+      "Mapped campus population distribution and existing information directories to identify an optimal location for a new UQ information directory facility.",
     tags: ["ArcGIS Pro", "MCDA", "Weighted Overlay"],
     accent: "green",
     image: projectGisPlaceholder,
@@ -112,11 +111,11 @@ const projects = [
     category: "GIS + IT Integration",
     title: "DRBOT Platform",
     summary:
-      "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
-    tags: [ "Leaflet", "Python", "SQL Server"],
+      "An intelligent disaster-response platform combining robotics, AI, edge computing, computer vision, and GIS.",
+    tags: [ "YOLOv8","ComputerVision","Leaflet", "RaspberryPi","Whisper"],
     accent: "violet",
     image: drbotPlatform,
-    href: "https://github.com/Danica-YI/DR.BOT",
+    href: "https://www.linkedin.com/feed/update/urn:li:activity:7501972142549266432/",
   },
   {
     id: "Lightening-World-platform",
@@ -125,7 +124,7 @@ const projects = [
     category: "GIS + IT Integration",
     title: "Lightning World Platform",
     summary:
-      "An ArcGIS-based platform that integrates spatial data with web and desktop technologies for 3D visualization and management.",
+      "A WebGIS application for tourist check-ins and travel exploration.",
     tags: [ "OpenLayers", "HTML","Python", "SQL Server"],
     accent: "violet",
     image: projectInprogressPlaceholder,
@@ -141,7 +140,23 @@ const projects = [
       "A full-stack web system for strategic planning, monitoring, and reporting to improve operational efficiency.",
     tags: ["Featured","Laravel", "MySQL", "JavaScript", "PHP"],
     accent: "orange",
-    image: projectItPlaceholder,
+    image: spdmPlatform,
+  },
+  {
+    id: "yufei-resume-profile",
+    lens: "it",
+    filters: ["all", "it"],
+    category: "IT Development",
+    title: "Yufei Resume & Portfolio",
+    summary:
+      "A responsive personal portfolio showcasing GIS, software development, and surveying through an interactive 3D career universe, filterable projects, and a skills network.",
+    tags: ["JavaScript", "Vite", "Three.js", "Responsive Design"],
+    accent: "orange",
+    image: resumeProfilePreview,
+    imageAlt: "Yufei portfolio homepage illustration with its career universe and three disciplines",
+    href: "#home",
+    linkLabel: "Explore Website Home &rarr;",
+    clickableCard: true,
   },
   {
     id: "Leave-Shift-Manager",
@@ -150,8 +165,8 @@ const projects = [
     category: "IT Development",
     title: "Leave and Shift Management System",
     summary:
-      "Designing intuitive and responsive interfaces that improve usability and engagement.",
-    tags: ["Figma", "MangoDB", "JavaScript", "Node.js", "Express.js", "React", "UI/UX Design"],
+      "A full-stack project covering the complete software development lifecycle, from requirements and design to development, testing, deployment, and maintenance.",
+    tags: ["Figma", "MangoDB", "JavaScript", "Node.js", "React", "UI/UX Design"],
     accent: "orange",
     image: projectItPlaceholder,
     href: "https://github.com/Yufei0122/Leave-Shift-Manager",
@@ -177,7 +192,7 @@ const projects = [
     title: "AI-mmi Home Page Design",
     summary:
       "Designing intuitive and responsive interfaces that improve usability and engagement.",
-    tags: ["Figma", "UI/UX Design", "Prototyping"],
+    tags: ["Figma", "UI/UX Design", "Prototyping","AI-mmi","Human-Centered Design"],
     accent: "pink",
     image: aimmiHomePage,
     href: "https://www.figma.com/proto/DqPsTtZJj9IXabiFHEMgFS/AI-mmi-Design?node-id=1-84&p=f&t=leFRnJWV8a2JlWaK-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A84",
@@ -190,46 +205,14 @@ const projectFilters = [
   { id: "gis", label: "GIS" },
   { id: "it", label: "IT" },
   { id: "integrated", label: "INTEGRATED" },
-  { id: "surveying", label: "SURVEYING" },
+  /*{ id: "surveying", label: "SURVEYING" },*/
 ];
 
 let cleanupCareerUniverse = null;
 let cleanupCareerUniverseScroll = null;
 let cleanupCareerUniverseMode = null;
 let cleanupCareerUniverseActivity = null;
-
-function createCompactCareerUniverseCycle(sceneApi) {
-  if (!sceneApi) {
-    return () => {};
-  }
-
-  const focusProgressSequence = [0.6, 0.84, 0.975];
-  let frameId = 0;
-  let startedAt = performance.now();
-
-  function tick(now) {
-    const elapsed = now - startedAt;
-    const cycleDuration = 18000;
-    const segmentDuration = cycleDuration / focusProgressSequence.length;
-    const index = Math.floor((elapsed % cycleDuration) / segmentDuration);
-    const progress = focusProgressSequence[index] ?? focusProgressSequence[0];
-    sceneApi.setStoryView({
-      ...getCareerUniverseStoryState(progress),
-      integration: 0,
-    });
-    frameId = window.requestAnimationFrame(tick);
-  }
-
-  sceneApi.setStoryView({
-    ...getCareerUniverseStoryState(focusProgressSequence[0]),
-    integration: 0,
-  });
-  frameId = window.requestAnimationFrame(tick);
-
-  return () => {
-    window.cancelAnimationFrame(frameId);
-  };
-}
+let cleanupExperienceMap = null;
 
 function supportsWebGL() {
   try {
@@ -295,13 +278,13 @@ function renderProjectPreview(project) {
     `;
   }
 
-  return `<img class="project-image" src="${project.image}" alt="${project.title} placeholder" />`;
+  return `<img class="project-image" src="${project.image}" alt="${project.imageAlt ?? `${project.title} placeholder`}" />`;
 }
 
 function renderProjectLink(project) {
   const hasLink = typeof project.href === "string" && project.href.trim().length > 0;
   const href = hasLink ? project.href : "#contact";
-  const label = hasLink ? "View Project Details &rarr;" : "Want to know more? Talk to me &rarr;";
+  const label = project.linkLabel ?? (hasLink ? "View Project Details &rarr;" : "Want to know more? Talk to me &rarr;");
   const externalAttrs = hasLink && !href.startsWith("#") ? ' target="_blank" rel="noreferrer"' : "";
 
   return `<a class="project-link" href="${href}"${externalAttrs}>${label}</a>`;
@@ -328,7 +311,7 @@ function renderProjectCards(activeFilter = "featured") {
   return visibleProjects
     .map(
       (project, index) => `
-        <article class="project-card ${project.accent}">
+        <article class="project-card ${project.accent}${project.clickableCard ? " is-linked" : ""}">
           <div class="project-header">
             <span class="project-index">${String(index + 1).padStart(2, "0")}</span>
             <div>
@@ -362,8 +345,7 @@ export function renderHomePage() {
         <nav class="topnav" aria-label="Main Navigation">
           <a href="#home">Home</a>
           <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <!--<a href="#experience">Experience</a>-->
+          <a href="#experience">Experience</a>
           <a href="#contact">Contact</a>
         </nav>
       </header>
@@ -410,6 +392,8 @@ export function renderHomePage() {
               <a href="#contact">Let's connect &rarr;</a>
             </div>
           </section>
+
+          ${renderExperienceMapSection()}
 
           <!-- Career Lens Section -->
           <!--
@@ -513,8 +497,12 @@ function bindProjectFilters() {
 export function hydrateHomePage() {
   bindProjectButtons();
   bindProjectFilters();
+  cleanupExperienceMap = mountExperienceMapSection();
   const story = document.querySelector(".career-universe-story");
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const compactQuery = window.matchMedia("(max-width: 860px)");
+  let modeRequest = 0;
+  let disposed = false;
 
   function resetCareerUniverse() {
     cleanupCareerUniverseActivity?.();
@@ -525,109 +513,101 @@ export function hydrateHomePage() {
     cleanupCareerUniverse = null;
   }
 
-  function applyCareerUniverseMode() {
+  async function applyCareerUniverseMode() {
     if (!story) {
       return;
     }
 
+    const request = ++modeRequest;
     resetCareerUniverse();
 
     const reducedMotion = reducedMotionQuery.matches;
-    const compactMode = window.innerWidth <= 860;
-    const webglAvailable = supportsWebGL();
-    const compact3dMode = compactMode && webglAvailable && !reducedMotion;
-    const staticMode = reducedMotion || compactMode;
+    const compactMode = compactQuery.matches;
+    story.classList.toggle("is-static", compactMode || reducedMotion);
+    story.classList.remove("is-webgl-disabled");
 
-    story.classList.toggle("is-compact-3d", compact3dMode);
-    story.classList.toggle("is-static", (!compact3dMode && staticMode) || !webglAvailable);
-    story.classList.toggle("is-webgl-disabled", !webglAvailable);
-
-    if (compactMode && !compact3dMode) {
+    if (compactMode) {
+      cleanupCareerUniverseActivity = mountCareerUniverseMobile(story);
+      return;
+    }
+    if (reducedMotion) {
+      return;
+    }
+    if (!supportsWebGL()) {
+      story.classList.add("is-webgl-disabled", "is-static");
       return;
     }
 
-    if (!webglAvailable || reducedMotion) {
-      return;
-    }
+    try {
+      const [{ mountCareerUniverseScene }, { createCareerUniverseScrollController }] = await Promise.all([
+        import("../features/careerUniverse/careerUniverseScene.js"),
+        import("../features/careerUniverse/careerUniverseScrollController.js"),
+      ]);
+      if (disposed || request !== modeRequest) return;
 
-    const sceneApi = mountCareerUniverseScene({
-      staticMode: compact3dMode ? false : staticMode,
-      compactMode,
-    });
-    cleanupCareerUniverse = sceneApi?.cleanup ?? null;
+      const sceneApi = mountCareerUniverseScene();
+      cleanupCareerUniverse = sceneApi?.cleanup ?? null;
+      if (!sceneApi) {
+        story.classList.add("is-webgl-disabled", "is-static");
+        return;
+      }
 
-    if (!sceneApi) {
-      story.classList.add("is-webgl-disabled");
-      story.classList.add("is-static");
-      return;
-    }
-
-    if (compact3dMode) {
-      cleanupCareerUniverseScroll = createCompactCareerUniverseCycle(sceneApi);
-      sceneApi.setActive?.(true);
-      return;
-    }
-
-    const visibilityHandler = () => {
-      sceneApi.setActive?.(!document.hidden);
-    };
-    document.addEventListener("visibilitychange", visibilityHandler);
-
-    let storyObserver = null;
-    if ("IntersectionObserver" in window) {
-      storyObserver = new IntersectionObserver(
-        ([entry]) => {
-          sceneApi.setActive?.(Boolean(entry?.isIntersecting));
-        },
-        { threshold: 0.04 }
-      );
-      storyObserver.observe(story);
-    }
-
-    cleanupCareerUniverseActivity = () => {
-      document.removeEventListener("visibilitychange", visibilityHandler);
-      storyObserver?.disconnect();
-    };
-
-    if (staticMode) {
-      sceneApi.setStoryView({
-        ...getCareerUniverseStoryState(0),
-        integration: 0,
+      let storyVisible = true;
+      const visibilityHandler = () => sceneApi.setActive?.(storyVisible && !document.hidden);
+      document.addEventListener("visibilitychange", visibilityHandler);
+      let storyObserver = null;
+      if ("IntersectionObserver" in window) {
+        storyObserver = new IntersectionObserver(([entry]) => {
+          storyVisible = Boolean(entry?.isIntersecting);
+          visibilityHandler();
+        }, { threshold: 0.04 });
+        storyObserver.observe(story);
+      }
+      visibilityHandler();
+      cleanupCareerUniverseActivity = () => {
+        document.removeEventListener("visibilitychange", visibilityHandler);
+        storyObserver?.disconnect();
+      };
+      cleanupCareerUniverseScroll = createCareerUniverseScrollController({
+        section: story,
+        sceneApi,
       });
-      sceneApi.setActive?.(true);
-      return;
+    } catch (error) {
+      if (disposed || request !== modeRequest) return;
+      resetCareerUniverse();
+      story.classList.add("is-webgl-disabled", "is-static");
+      console.error("Career universe could not load:", error);
     }
-
-    cleanupCareerUniverseScroll = createCareerUniverseScrollController({
-      section: story,
-      sceneApi,
-    });
   }
 
   applyCareerUniverseMode();
 
-  const handleResize = () => applyCareerUniverseMode();
-  const handleMotionChange = () => applyCareerUniverseMode();
-
-  window.addEventListener("resize", handleResize);
-  if (typeof reducedMotionQuery.addEventListener === "function") {
-    reducedMotionQuery.addEventListener("change", handleMotionChange);
-  } else if (typeof reducedMotionQuery.addListener === "function") {
-    reducedMotionQuery.addListener(handleMotionChange);
+  const handleModeChange = () => applyCareerUniverseMode();
+  for (const query of [compactQuery, reducedMotionQuery]) {
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", handleModeChange);
+    } else {
+      query.addListener(handleModeChange);
+    }
   }
 
   cleanupCareerUniverseMode = () => {
-    window.removeEventListener("resize", handleResize);
-    if (typeof reducedMotionQuery.removeEventListener === "function") {
-      reducedMotionQuery.removeEventListener("change", handleMotionChange);
-    } else if (typeof reducedMotionQuery.removeListener === "function") {
-      reducedMotionQuery.removeListener(handleMotionChange);
+    disposed = true;
+    modeRequest++;
+    for (const query of [compactQuery, reducedMotionQuery]) {
+      if (typeof query.removeEventListener === "function") {
+        query.removeEventListener("change", handleModeChange);
+      } else {
+        query.removeListener(handleModeChange);
+      }
     }
     resetCareerUniverse();
   };
 }
 
 export function teardownHomePage() {
+  cleanupExperienceMap?.();
+  cleanupExperienceMap = null;
   cleanupCareerUniverseMode?.();
   cleanupCareerUniverseMode = null;
   cleanupCareerUniverseScroll?.();

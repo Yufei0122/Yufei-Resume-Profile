@@ -2,12 +2,19 @@
   "name": "yufei-resume-profile",
   "private": true,
   "version": "1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
+    "setup": "npm --prefix frontend ci --include=dev",
     "dev": "npm --prefix frontend run dev",
-    "build": "npm --prefix frontend run build",
+    "check": "node scripts/check-imports.mjs && npm test",
+    "test": "npm --prefix frontend test",
+    "build": "npm run check && npm --prefix frontend run build && node scripts/check-build.mjs",
+    "preview": "npm --prefix frontend run preview",
     "frontend:install": "npm --prefix frontend install",
     "frontend:dev": "npm --prefix frontend run dev",
-    "frontend:build": "npm --prefix frontend run build",
+    "frontend:build": "npm run build",
     "frontend:preview": "npm --prefix frontend run preview"
   }
 }

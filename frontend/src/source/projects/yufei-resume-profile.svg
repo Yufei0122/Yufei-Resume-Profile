@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" fill="none">
+  <defs>
+    <linearGradient id="background" x1="80" y1="70" x2="1100" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FAF8F3"/>
+      <stop offset="1" stop-color="#EAF2EC"/>
+    </linearGradient>
+    <radialGradient id="gis" cx="0.3" cy="0.25" r="0.85">
+      <stop stop-color="#CCE1BE"/>
+      <stop offset="1" stop-color="#397F63"/>
+    </radialGradient>
+    <radialGradient id="it" cx="0.3" cy="0.25" r="0.85">
+      <stop stop-color="#BBD8E8"/>
+      <stop offset="1" stop-color="#426D93"/>
+    </radialGradient>
+    <radialGradient id="surveying" cx="0.3" cy="0.25" r="0.85">
+      <stop stop-color="#F6D4AB"/>
+      <stop offset="1" stop-color="#B66F4D"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="750" rx="28" fill="url(#background)"/>
+  <rect x="34" y="34" width="1132" height="682" rx="22" fill="#FFFFFF" fill-opacity="0.64" stroke="#D9E4DC" stroke-width="2"/>
+  <path d="M34 126H1166" stroke="#D9E4DC" stroke-width="2"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="74" y="92" fill="#243A35" font-size="30" font-weight="700">Yufei He</text>
+    <g fill="#63736C" font-size="23">
+      <text x="650" y="90">Home</text>
+      <text x="764" y="90">Projects</text>
+      <text x="908" y="90">Skills</text>
+      <text x="1012" y="90">Contact</text>
+    </g>
+    <text x="80" y="228" fill="#657C6F" font-size="20" font-weight="600" letter-spacing="4">CAREER UNIVERSE</text>
+    <g font-size="54" font-weight="700" fill="#243A35">
+      <text x="80" y="320">I connect the</text>
+      <text x="80" y="388"><tspan fill="#B66F4D">physical</tspan>, <tspan fill="#397F63">spatial</tspan></text>
+      <text x="80" y="456">and <tspan fill="#426D93">digital</tspan> worlds.</text>
+    </g>
+    <text x="80" y="522" fill="#63736C" font-size="22">Surveying · GIS · Information Technology</text>
+    <text x="80" y="564" fill="#63736C" font-size="22">Measure · Understand · Build</text>
+    <path d="M80 605H260" stroke="#86AA91" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="870" cy="387" rx="208" ry="186" stroke="#BACCC0" stroke-width="2" stroke-dasharray="6 12"/>
+    <ellipse cx="872" cy="389" rx="215" ry="83" transform="rotate(-35 872 389)" stroke="#B9C9D4" stroke-width="2"/>
+    <path d="M804 270L998 420L787 529Z" stroke="#C5D2C8" stroke-width="2"/>
+    <circle cx="804" cy="270" r="77" fill="url(#gis)"/>
+    <ellipse cx="804" cy="270" rx="38" ry="77" stroke="#F6FAF1" stroke-opacity="0.4" stroke-width="2"/>
+    <ellipse cx="804" cy="270" rx="77" ry="28" stroke="#F6FAF1" stroke-opacity="0.4" stroke-width="2"/>
+    <circle cx="998" cy="420" r="68" fill="url(#it)"/>
+    <text x="998" y="432" text-anchor="middle" fill="#EEF6FA" font-size="37" font-weight="600">&lt;/&gt;</text>
+    <circle cx="787" cy="529" r="52" fill="url(#surveying)"/>
+    <path d="M757 544L787 503L817 544ZM787 503V544" stroke="#FFF4E3" stroke-opacity="0.7" stroke-width="2"/>
+    <g font-size="20" font-weight="600" text-anchor="middle">
+      <text x="804" y="169" fill="#397F63">GIS</text>
+      <text x="998" y="519" fill="#426D93">IT</text>
+      <text x="787" y="616" fill="#A56042">Surveying</text>
+    </g>
+  </g>
+</svg>

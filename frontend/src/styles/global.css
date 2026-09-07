@@ -96,8 +96,9 @@ button {
   height: var(--topbar-height);
   min-height: var(--topbar-height);
   padding: 0 48px;
-  background: transparent;
+  background: linear-gradient(110deg, #fffdf9, var(--career-ivory));
   border: none;
+  border-bottom: 1px solid rgba(179, 163, 138, 0.18);
   border-radius: 0;
   position: relative;
   z-index: 40;
@@ -130,7 +131,7 @@ button {
 }
 
 .brand small span {
-  color: var(--orange);
+  color: var(--career-survey);
   font-size: 1rem;
 }
 
@@ -160,8 +161,9 @@ button {
   color: var(--career-navy);
 }
 
+.topnav a:hover,
 .topnav a.is-active {
-  color: var(--green);
+  color: var(--career-gis);
 }
 
 .topnav a.is-active::after {
@@ -172,7 +174,7 @@ button {
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  background: var(--green);
+  background: var(--career-gis);
   transform: translateX(-50%);
 }
 
@@ -198,10 +200,6 @@ button {
   position: relative;
   min-height: 360vh;
   border-bottom: 1px solid rgba(219, 229, 238, 0.5);
-}
-
-.career-universe-mobile-hero {
-  display: none;
 }
 
 .hero-section {
@@ -1686,6 +1684,27 @@ button {
   transform: translateY(-2px) scale(1.01);
 }
 
+.project-card.is-linked {
+  position: relative;
+}
+
+.project-card.is-linked .project-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+}
+
+.project-card.is-linked:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(34, 48, 65, 0.08);
+}
+
+.project-card.is-linked:focus-within {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
 .project-header {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -2503,28 +2522,9 @@ button {
     border-bottom: none;
   }
 
-  .career-universe-mobile-hero {
-    display: block;
-    padding: 24px 20px 28px;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(214, 174, 121, 0.14), transparent 24%),
-      radial-gradient(circle at 82% 18%, rgba(64, 140, 204, 0.08), transparent 22%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 246, 238, 0.88));
-  }
-
-  .career-universe-mobile-copy {
-    display: grid;
-    gap: 0;
-  }
-
-  .career-universe-mobile-copy .career-universe-headline {
-    margin: 0;
-    max-width: none;
-  }
-
-  .career-universe-story:not(.is-compact-3d) .career-universe-stage,
-  .career-universe-story:not(.is-compact-3d) .career-universe-scroll-track,
-  .career-universe-story:not(.is-compact-3d) .career-universe-summaries {
+  .career-universe-story .career-universe-stage,
+  .career-universe-story .career-universe-scroll-track,
+  .career-universe-story .career-universe-summaries {
     display: none !important;
   }
 
@@ -2541,45 +2541,11 @@ button {
     min-height: auto;
   }
 
-  .career-universe-story.is-compact-3d .career-universe-section {
-    display: block !important;
-    min-height: auto;
-    padding: 0 20px 28px;
-  }
-
-  .career-universe-story.is-compact-3d .hero-copy,
-  .career-universe-story.is-compact-3d .career-universe-scroll-track,
-  .career-universe-story.is-compact-3d .career-universe-progress,
-  .career-universe-story.is-compact-3d .career-universe-story-panels,
-  .career-universe-story.is-compact-3d .career-universe-summaries {
-    display: none !important;
-  }
-
   .hero-visual {
     min-height: 520px;
     height: 520px;
     padding-left: 0;
     margin-top: 8px;
-  }
-
-  .career-universe-story.is-compact-3d .hero-visual {
-    min-height: 360px;
-    height: 360px;
-    margin-top: 0;
-    border-radius: 28px;
-  }
-
-  .career-universe-story.is-compact-3d .career-universe-visual {
-    display: block !important;
-    border-radius: 28px;
-  }
-
-  .career-universe-story.is-compact-3d .career-universe-visual::before {
-    border-radius: 28px;
-  }
-
-  .career-universe-story.is-compact-3d .career-universe-canvas {
-    min-height: 360px;
   }
 
   .career-universe-stage.is-story-hero .career-universe-progress {

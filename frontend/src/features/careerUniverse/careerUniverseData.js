@@ -34,6 +34,8 @@ export const careerUniversePlanets = [
       { label: "Geospatial Data", orbitRadius: 1.58, orbitTiltX: -0.72, orbitTiltZ: -0.15, phase: 3.65, speed: -0.0044, scale: 0.115 },
       { label: "GeoPanda", orbitRadius: 1.82, orbitTiltX: 0.68, orbitTiltZ: 0.24, phase: 4.72, speed: 0.004, scale: 0.11 },
       { label: "Mapping", orbitRadius: 1.66, orbitTiltX: -0.12, orbitTiltZ: -0.85, phase: 5.48, speed: -0.0038, scale: 0.102 },
+      { label: "Spatial Modelling", orbitRadius: 2.06, orbitTiltX: 0.56, orbitTiltZ: -0.54, phase: 1.86, speed: 0.0035, scale: 0.106 },
+      { label: "SQL", orbitRadius: 1.86, orbitTiltX: -0.5, orbitTiltZ: 0.7, phase: 4.16, speed: -0.0039, scale: 0.108 },
     ],
   },
   {
@@ -55,6 +57,12 @@ export const careerUniversePlanets = [
       { label: "REST APIs", orbitRadius: 1.92, orbitTiltX: -0.12, orbitTiltZ: -0.86, phase: 4.92, speed: -0.0036, scale: 0.102 },
       { label: "Automation", orbitRadius: 1.6, orbitTiltX: 0.58, orbitTiltZ: 0.28, phase: 5.7, speed: 0.0041, scale: 0.108 },
       { label: "Databases", orbitRadius: 1.82, orbitTiltX: -0.48, orbitTiltZ: 0.62, phase: 2.68, speed: -0.0039, scale: 0.108 },
+      { label: "PHP", orbitRadius: 2.02, orbitTiltX: 0.5, orbitTiltZ: -0.58, phase: 0.56, speed: 0.0034, scale: 0.102 },
+      { label: "Node.js", orbitRadius: 1.76, orbitTiltX: -0.82, orbitTiltZ: -0.3, phase: 1.5, speed: -0.0037, scale: 0.108 },
+      { label: "Figma", orbitRadius: 2.12, orbitTiltX: 0.16, orbitTiltZ: 0.56, phase: 2.34, speed: 0.0032, scale: 0.102 },
+      { label: "Machine Learning", orbitRadius: 2.06, orbitTiltX: -0.54, orbitTiltZ: -0.7, phase: 3.58, speed: -0.0033, scale: 0.104 },
+      { label: "SDLC", orbitRadius: 1.94, orbitTiltX: 0.88, orbitTiltZ: 0.4, phase: 4.52, speed: 0.0035, scale: 0.1 },
+      { label: "Full-Stack", orbitRadius: 2.18, orbitTiltX: -0.24, orbitTiltZ: 0.94, phase: 5.98, speed: -0.0031, scale: 0.104 },
     ],
   },
 ];

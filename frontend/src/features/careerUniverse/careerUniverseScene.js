@@ -11,6 +11,8 @@ import mysqlIconSrc from "../../source/icon/mysql.svg";
 import postgresqlIconSrc from "../../source/icon/postgresql.svg";
 import postmanIconSrc from "../../source/icon/postman.svg";
 import nodedotjsIconSrc from "../../source/icon/nodedotjs.svg";
+import phpIconSrc from "../../source/icon/php.svg";
+import figmaIconSrc from "../../source/icon/figma.svg";
 import autocadIconSrc from "../../source/icon/autocad.svg";
 
 const SURFACE_NORMAL = new THREE.Vector3(0, 0, 1);
@@ -21,17 +23,16 @@ const IT_SATELLITE_ICON_MAP = {
   React: reactIconSrc,
   Databases: mysqlIconSrc,
   "REST APIs": postmanIconSrc,
-  Automation: nodedotjsIconSrc,
+  "Node.js": nodedotjsIconSrc,
+  PHP: phpIconSrc,
+  Figma: figmaIconSrc,
 };
 
 const GIS_SATELLITE_ICON_MAP = {
   Python: pythonIconSrc,
-  JavaScript: javascriptIconSrc,
   "C#": dotnetIconSrc,
   AutoCAD:autocadIconSrc,
-  React: reactIconSrc,
   Databases: postgresqlIconSrc,
-  "REST APIs": postmanIconSrc,
   Automation: nodedotjsIconSrc,
 };
 
@@ -1593,7 +1594,9 @@ export function mountCareerUniverseScene(options = {}) {
       }
 
       satellites.forEach((satellite, satelliteIndex) => {
-        const stagger = Math.max(node.satelliteRevealCurrent * 1.28 - satelliteIndex * 0.12, 0);
+        // Distribute the delay across the group so every skill is fully revealed.
+        const delay = (satelliteIndex / Math.max(satellites.length - 1, 1)) * 0.28;
+        const stagger = Math.max(node.satelliteRevealCurrent * 1.28 - delay, 0);
         const reveal = Math.min(stagger, 1) * node.emphasisCurrent;
 
         satellite.revealCurrent += (reveal - satellite.revealCurrent) * 0.1;

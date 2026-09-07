@@ -6,6 +6,11 @@ __pycache__/
 *.pyc
 .env
 .env.local
+.env.*
+!.env.example
+.vercel/
+coverage/
+npm-debug.log*
 .DS_Store
 .pytest_cache/
 

@@ -12,7 +12,8 @@ function renderApp() {
 
     if (result.sectionId) {
       requestAnimationFrame(() => {
-        document.getElementById(result.sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+        document.getElementById(result.sectionId)?.scrollIntoView({ behavior, block: "start" });
       });
     }
   }
@@ -26,5 +27,10 @@ function renderApp() {
   }
 }
 
+const isReload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+
 renderApp();
+if (isReload) {
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+}
 window.addEventListener("hashchange", renderApp);
