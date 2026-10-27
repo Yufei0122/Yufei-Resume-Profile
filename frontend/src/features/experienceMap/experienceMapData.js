@@ -6,6 +6,7 @@ export const experiencePlaces = [
   { id: "uq-st-lucia", name: "UQ St Lucia", region: "Brisbane, Queensland, Australia", coordinates: [-27.4975, 153.0137], group: "brisbane" },
   { id: "qut-gardens-point", name: "QUT Gardens Point", region: "Brisbane, Queensland, Australia", coordinates: [-27.47724, 153.02834], group: "brisbane", focusZoom: 13 },
   { id: "city-1", name: "Brisbane City", region: "Brisbane, Queensland, Australia", coordinates: [-27.4698, 153.0251], group: "brisbane" },
+  { id: "city-2", name: "95 North Quay, Brisbane City", region: "Brisbane, Queensland, Australia", coordinates: [-27.4695079,153.0207943,267], group: "brisbane" },
 ];
 
 export const experienceCategories = [
@@ -78,6 +79,15 @@ export const experiences = [
     title: "Master of Geographic Information Science", organization: "The University of Queensland",
     summary: "Postgraduate study in geographic information science and spatial analysis.",
     highlights: ["GPA: 5.83 / 7"], tags: ["GIS", "Spatial Analysis"],
+  },
+  {
+    id: "onterris", placeId: "city-2", category: "work", period: "Sep 2026 – Present",
+    startDate: "2026-09",
+    title: "GIS Intern", organization: "Onterris",
+    summary: "Contributed to the company's GIS Team.",
+    highlights: [
+      "Conducted spatial analysis and data visualization for various projects.",
+    ], tags: ["GIS"],
   },
 ];
 
